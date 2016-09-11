@@ -30,11 +30,13 @@ docker pull ramxx/cfjump
 Or if you prefer to build it yourself:
 
 ```
-git clone
-cd 
+git clone https://github.com/RamXX/cfjump
+cd cfjump
 docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.1 .
 docker push ramxx/cfjump
 ```
+Increment the version if you change this.
+
 ## Running
 To run a new instance:
 
