@@ -3,17 +3,20 @@ MAINTAINER Ramiro Salas <rsalas@pivotal.io>
 
 ENV HOME /home/ops
 ENV ENAML /opt/enaml
-ENV SHARED /var/host
 ENV GOPATH $HOME/bin
 ENV GOROOT /usr/local/go
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin
 
-RUN mkdir -p $ENAML/products && mkdir -p $HOME/bin
-RUN useradd -d $HOME ops
+RUN mkdir -p $ENAML/products && mkdir -p $ENAML/cloudconfig
+ADD update_enaml.sh /usr/local/bin
 
-ADD update_enaml.sh $HOME/bin
-
-RUN chown -R ops: $HOME
+RUN mkdir $HOME
+RUN useradd -M -d $HOME ops
+VOLUME $HOME
+RUN chown -R ops: $HOME $ENAML
+WORKDIR $HOME
+RUN mkdir -p $HOME/bin
+RUN cp -n /etc/skel/.[a-z]* .
 
 RUN cat /etc/apt/sources.list | sed 's/archive/us.archive/g' > /tmp/s && mv /tmp/s /etc/apt/sources.list
 RUN apt-get update && apt-get -y --no-install-recommends install wget -q curl
@@ -61,12 +64,12 @@ RUN cd /usr/local/bin && wget -q -O safe \
     "$(curl -s https://api.github.com/repos/starkandwayne/safe/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x safe
 
+RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis" > /usr/bin/genesis \
+    && chmod 0755 /usr/bin/genesis
+
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p $SHARED && touch $SHARED/.basefile
-VOLUME /var/host
-RUN chown -R ops: $HOME $ENAML $SHARED
+RUN echo "ops      ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 USER ops
-WORKDIR $HOME
