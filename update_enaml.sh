@@ -28,15 +28,20 @@ for i in $(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/re
         wget -q $i
 done
 
+cd $HOME
+
 rm -rf $PLUGINS
 
 echo "Registering cloud configs..."
 find $CCONF -type f -print | while read i; do \
-    $OMGBIN/omg register-plugin --type cloudconfig -pluginpath $i
+    $OMGBIN/omg register-plugin -type cloudconfig -pluginpath $i
 done
 
 echo "Registering products..."
 find $PROD -type f -print | while read i; do
-    $OMGBIN/omg register-plugin --type product -pluginpath $i
+    $OMGBIN/omg register-plugin -type product -pluginpath $i
 done
+
+omg list-cloudconfigs
+omg list-products
 echo "All done."
