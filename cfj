@@ -24,7 +24,7 @@ else
     docker start -ai "$env"
   else
     cd $HOME
-    mkdir "$env" && touch $env/.touchfile
+    mkdir -p "$env" && touch $env/.touchfile
     docker run --name="$env" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
   fi
 fi
