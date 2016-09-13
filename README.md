@@ -42,7 +42,12 @@ Increment the version if you change this.
 ## Running
 First, make sure you can run instances as a regular unprivileged user. This container will create an internal user with uid and gid of 1000, same as the default in Ubuntu, which makes easier to share folders.
 
-To run a brand new instance:
+The included `cfj` script make the operation of virtual jumpboxes easy. I suggest you copy it to your $PATH and use it directly. The operation is:
+- `cfj list` to list the running containers.
+- `cfj <name>` to either create or enter a container.
+- `cfj kill <name>` to delete a running container. The associated shared volume won't be deleted. That needs to be done manually if desired.
+
+Without the script, you can manually run a brand new instance:
 
 ```
 mkdir shared_vol

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ $# -eq 0 -o $# -gt 2 ]; then
+  echo "usage: cfj <env-name> | list | kill <env-name>"
+  exit 1
+fi
+
+if [ "$1" == "list" ] ; then
+  docker ps -a --format="{{.Names}}"
+  exit 0
+fi
+
+if [[ "$#" == "2" && "$1" == "kill" ]] ; then
+  env="$2"
+  if [ ! -z "$(docker ps -a | grep "$env")" ]; then
+    echo $(docker rm "$env") killed
+  else
+    echo "Environment doesn't exist"
+    exit 2
+  fi
+else
+  env="$1"
+  if [ ! -z "$(docker ps -a | grep "$env")" ]; then
+    docker start -ai "$env"
+  else
+    cd $HOME
+    mkdir "$env" && touch $env/.touchfile
+    docker run --name="$env" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
+  fi
+fi
