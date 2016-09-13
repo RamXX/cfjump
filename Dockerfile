@@ -21,8 +21,9 @@ RUN cp -n /etc/skel/.[a-z]* .
 RUN cat /etc/apt/sources.list | sed 's/archive/us.archive/g' > /tmp/s && mv /tmp/s /etc/apt/sources.list
 RUN apt-get update && apt-get -y --no-install-recommends install wget -q curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
-           build-essential git curl software-properties-common dnsutils \
-           traceroute jq vim wget -q unzip sudo iperf screen tmux byobu
+           build-essential git ssh curl software-properties-common dnsutils \
+           iputils-ping traceroute jq vim wget -q unzip sudo iperf screen tmux \
+           file byobu
 
 RUN wget -q -O - "https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz" \
     | tar -C /usr/local -zx
