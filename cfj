@@ -19,7 +19,7 @@ if [[ "$#" == "2" && "$1" == "kill" ]] ; then
     exit 2
   fi
 else
-  env="$1"
+  env=$(basename "$1")
   if [ ! -z "$(docker ps -a | grep "$env")" ]; then
     docker start -ai "$env"
   else
