@@ -23,7 +23,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            build-essential git ssh curl software-properties-common dnsutils \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
-           file openstack byobu tcpdump nmap less s3cmd s3curl
+           file openstack byobu tcpdump nmap less s3cmd s3curl silversearcher-ag
 
 RUN wget -q -O - "https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz" \
     | tar -C /usr/local -zx
