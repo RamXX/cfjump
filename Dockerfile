@@ -19,16 +19,14 @@ RUN mkdir -p $HOME/bin
 RUN cp -n /etc/skel/.[a-z]* .
 
 RUN cat /etc/apt/sources.list | sed 's/archive/us.archive/g' > /tmp/s && mv /tmp/s /etc/apt/sources.list
-RUN apt-get update && apt-get -y --no-install-recommends install wget -q curl
+RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            build-essential git ssh curl software-properties-common dnsutils \
-           iputils-ping traceroute jq vim wget -q unzip sudo iperf screen tmux \
-           file byobu
+           iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
+           file openstack byobu tcpdump nmap less s3cmd s3curl
 
 RUN wget -q -O - "https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz" \
     | tar -C /usr/local -zx
-
-RUN go get github.com/concourse/fly && mv $GOPATH/bin/fly /usr/local/bin
 
 RUN curl -L \
     "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" \
@@ -51,6 +49,10 @@ RUN cd /tmp && git clone https://github.com/square/certstrap && \
     cd certstrap/ && ./build && mv bin/certstrap /usr/local/bin/ && cd /tmp && \
     rm -rf certstrap
 
+RUN cd /usr/local/bin && wget -q -O fly \
+    "$(curl -s https://api.github.com/repos/concourse/concourse/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x fly
+
 RUN cd /usr/local/bin && wget -q -O spiff \
     "$(curl -s https://api.github.com/repos/cloudfoundry-incubator/spiff/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x spiff
@@ -69,9 +71,13 @@ RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/gen
 RUN baseURL=$(wget -q -O- https://github.com/vmware/photon-controller/releases/ | grep -m 1 photon-linux | perl -ne 'print map("$_\n", m/href=\".*?\"/g)' |  tr -d '"' | awk -F "href=" '{print$2}') && wget https://github.com$baseURL -O /usr/local/bin/photon
 RUN chmod 755 /usr/local/bin/photon
 
+RUN /usr/local/bin/update_enaml.sh
+
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN echo "ops      ALL=NOPASSWD: ALL" >> /etc/sudoers
+RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 USER ops
+
+CMD ["/bin/bash"]

@@ -10,6 +10,18 @@ mkdir -p $PROD
 mkdir -p $CCONF
 mkdir -p $OMGBIN
 
+ghub_version=$(curl -s "https://api.github.com/repos/enaml-ops/omg-cli/releases/latest" | jq --raw-output '.tag_name')
+
+if [ -f "$ENAML/.version" ] ; then
+   existing_version=$(cat $ENAML/.version)
+   if [ "$ghub_version" == "$existing_version" ] ; then
+     echo "No new versions."
+     exit 0
+   else
+     echo "Upgrading from version $existing_version to $ghub_version"
+   fi
+fi
+ 
 echo "Downloading Enaml omg and cloud-configs"
 cd $CCONF
 for i in \
@@ -27,6 +39,7 @@ for i in $(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/re
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux); do
         wget -q $i
 done
+echo "$ghub_version" > $ENAML/.version
 
 cd $HOME
 
