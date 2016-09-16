@@ -68,6 +68,7 @@ RUN cd /usr/local/bin && wget -q -O safe \
 RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis" > /usr/bin/genesis \
     && chmod 0755 /usr/bin/genesis
 
+# Thanks to Merlin Glynn for this part!
 RUN baseURL=$(wget -q -O- https://github.com/vmware/photon-controller/releases/ | grep -m 1 photon-linux | perl -ne 'print map("$_\n", m/href=\".*?\"/g)' |  tr -d '"' | awk -F "href=" '{print$2}') && wget https://github.com$baseURL -O /usr/local/bin/photon
 RUN chmod 755 /usr/local/bin/photon
 
