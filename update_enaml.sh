@@ -2,11 +2,6 @@
 # updates Enaml
 
 # ARCH can be either $ARCH or osx at the moment.
-ARCH=linux
-PROD=$ENAML/products
-CCONF=$ENAML/cloudconfig
-PLUGINS=$HOME/.plugins
-OMGBIN=$HOME/bin
 
 download_omg(){
   local i
@@ -14,7 +9,6 @@ download_omg(){
   echo "Upgrading from version $existing_version to $omg_ghub_version."
   echo "Downloading Enaml omg and cloud-configs..."
   cd $CCONF
-  rm -f ./*
   for i in \
       $(curl -s "https://api.github.com/repos/enaml-ops/omg-cli/releases/latest" \
       | jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
@@ -32,7 +26,6 @@ download_products(){
   echo "Upgrading from version $existing_version to $prod_ghub_version."
   echo "Downloading Enaml products..."
   cd $PROD
-  rm -f ./*
   for i in $(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/releases/latest" \
       |jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
           wget -q $i
@@ -64,6 +57,11 @@ if [ $# -ne 1 ]; then
 fi
 
 ENAML="$1"
+ARCH=linux
+PROD=$ENAML/products
+CCONF=$ENAML/cloudconfig
+PLUGINS=$HOME/.plugins
+OMGBIN=$HOME/bin
 
 mkdir -p $PROD
 mkdir -p $CCONF
