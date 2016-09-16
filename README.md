@@ -24,7 +24,7 @@ v0.3 includes:
 - [Photon Controller](https://github.com/vmware/photon-controller) CLI (latest)
 - [Enaml](http://enaml.pezapp.io/) (latest). All cloudconfigs and all plugins available.
 
-For Enaml, since it's in very active development, the `$HOME/bin/update_enaml.sh` is there to dynamically update and register the latest versions on demand.
+For Enaml, since it's in very active development, the `$HOME/bin/update_enaml.sh $ENAML` is there to dynamically update and register the latest versions on demand. The $ENAML variable is set to `/opt/enaml`.
 
 ## Building
 You can just get this image from Docker Hub by:
