@@ -3,7 +3,6 @@
 
 # ARCH can be either $ARCH or osx at the moment.
 ARCH=linux
-ENAML=$HOME/enaml
 PROD=$ENAML/products
 CCONF=$ENAML/cloudconfig
 PLUGINS=$HOME/.plugins
@@ -24,7 +23,6 @@ download_omg(){
   chmod +x omg-$ARCH
   mv omg-$ARCH "$OMGBIN/omg-$ARCH"
   ln -f -s "$OMGBIN/omg-$ARCH" "$OMGBIN/omg"
-  register_cloudconfigs
   echo "$omg_ghub_version" > "$ENAML/.omg_version"
 }
 
@@ -39,13 +37,11 @@ download_products(){
       |jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
           wget -q $i
   done
-  register_products
   echo "$prod_ghub_version" > $ENAML/.prod_version
 }
 
 register_cloudconfigs(){
   cd $HOME
-  rm -rf $PLUGINS/cloudconfig
   echo "Registering cloud configs..."
   find $CCONF -type f -print | while read i; do \
        $OMGBIN/omg register-plugin -type cloudconfig -pluginpath $i
@@ -54,7 +50,6 @@ register_cloudconfigs(){
 
 register_products(){
   cd $HOME
-  rm -rf $PLUGINS/products
   echo "Registering products..."
   find $PROD -type f -print | while read i; do
        $OMGBIN/omg register-plugin -type product -pluginpath $i
@@ -62,6 +57,13 @@ register_products(){
 }
 
 # Main
+
+if [ $# -ne 1 ]; then
+  echo "usage: update_enaml.sh <enaml directory>"
+  exit 1
+fi
+
+ENAML="$1"
 
 mkdir -p $PROD
 mkdir -p $CCONF
@@ -94,7 +96,6 @@ else
    download_products
 fi
 
-if [ ! -d "$PLUGINS" ]; then
-   register_cloudconfigs
-   register_products
-fi
+rm -rf $PLUGINS
+register_cloudconfigs
+register_products
