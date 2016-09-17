@@ -52,11 +52,12 @@ register_products(){
 # Main
 
 if [ $# -ne 1 ]; then
-  echo "usage: update_enaml.sh <enaml directory>"
+  echo "usage: update_enaml.sh <enaml_parent_directory>"
+  echo "(Will install enaml in <dir>/enaml)"
   exit 1
 fi
 
-ENAML="$1"
+ENAML="$1"/enaml
 ARCH=linux
 PROD=$ENAML/products
 CCONF=$ENAML/cloudconfig
