@@ -1,0 +1,51 @@
+jobs:
+  - name: build-artifact
+    serial: true
+    plan:
+      - get: omg-cli
+        trigger: false
+      - get: omg-product-bundle
+        trigger: false
+      - get: cfjump
+        trigger: true
+      - task: build
+        file: cfjump/ci/tasks/build.yml
+
+  - name: build-image
+    serial: true
+    plan:
+      - get: cfjump
+        passed: [ build-artifact ]
+      - put: cfjump-docker
+        params:
+          build: cfjump/
+
+resources:
+  - name: omg-cli
+    type: github-release
+    check_every: 4h
+    source:
+      user: enaml-ops
+      repository: omg-cli
+
+  - name: omg-product-bundle
+    type: github-release
+    check_every: 4h
+    source:
+      user: enaml-ops
+      repository: omg-product-bundle
+
+  - name: cfjump
+    type: github-release
+    check_every: 2h
+    source:
+      user: ramxx
+      repository: cfjump
+
+  - name: cfjump-docker
+    type: docker-image
+    source:
+      repository: ramxx/cfjump
+      username: {{docker-username}}
+      password: {{docker-password}}
+

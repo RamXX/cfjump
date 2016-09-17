@@ -1,7 +1,7 @@
 # cfjump
 Jumpbox Docker image with all required tools to operate and install Cloud Foundry. It works with different workflows, but focuses primarily on [Enaml](http://enaml.pezapp.io/).
 
-It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker VM. Your mileage on other systems may vary. 
+It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
 v0.4 includes:
 
@@ -49,7 +49,7 @@ The included `cfj` script make the operation of virtual jumpboxes easy. I sugges
 
 - `cfj list` to list the running containers.
 - `cfj <name>` to either create or enter a container.
-- `cfj kill <name>` to delete a running container. The associated shared volume 
+- `cfj kill <name>` to delete a running container. The associated shared volume
 won't be deleted. That needs to be done manually if desired.
 
 Without the script, you can manually run a brand new instance:
@@ -69,6 +69,13 @@ If you exit that shell, the container will remain in stopped mode. In order to g
 docker start -ai Jumpbox1
 ```
 Which will put you in the same place as you were before. You can use different jumpbox instances for different sessions, users, environments, etc, as long as you use different shared folders.
+
+## Limitations
+Every instance of a container can be used by a single user at the time. If another user attempts to join the same container while being used, all I/O will be shared in the screen. This can be a positive thing from the security standpoint, since only one user can be connected at the time, but in some cases it may be useful to have a second session.
+
+It may be possible to use an `sshd` daemon for that purpose, but that's outside the scope of this work.
+
+Additionally, `man` pages are not installed in this image to decrease its size. Typically, man pages can be accessed on the Docker host itself or easily found online.
 
 ## Contributing
 Please submit pull requests with any correction or improvement you want to do. I hope this is useful to other folks.
