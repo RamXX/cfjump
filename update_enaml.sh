@@ -51,7 +51,7 @@ register_products(){
 
 # Main
 if [ -z "$ENAML" ]; then
-  echo "Please set the $ENAML variable. This is the directory where Enaml will be installed. This program will overwrite that directory."
+  echo "Please set the \$ENAML variable. This is the directory where Enaml will be installed. This program will overwrite that directory."
   exit 1
 fi
 
