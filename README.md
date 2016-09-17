@@ -3,7 +3,7 @@ Jumpbox Docker image with all required tools to operate and install Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker VM. Your mileage on other systems may vary. 
 
-v0.3 includes:
+v0.4 includes:
 
 - Ubuntu:xenial official base image
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
@@ -30,7 +30,7 @@ For Enaml, since it's in very active development, the `$HOME/bin/update_enaml.sh
 You can just get this image from Docker Hub by:
 
 ```
-docker pull ramxx/cfjump
+docker pull ramxx/cfjump:latest
 ```
 
 Or if you prefer to build it yourself:
@@ -38,7 +38,7 @@ Or if you prefer to build it yourself:
 ```
 git clone https://github.com/RamXX/cfjump
 cd cfjump
-docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.3 .
+docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.4 .
 docker push ramxx/cfjump
 ```
 
