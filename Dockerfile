@@ -13,7 +13,7 @@ ADD update_enaml.sh /usr/local/bin
 RUN mkdir $HOME
 RUN useradd -M -d $HOME ops
 VOLUME $HOME
-RUN chown -R ops: $HOME $ENAML
+RUN chown -R ops: $HOME
 WORKDIR $HOME
 RUN mkdir -p $HOME/bin
 RUN cp -n /etc/skel/.[a-z]* .
@@ -72,6 +72,7 @@ RUN baseURL=$(wget -q -O- https://github.com/vmware/photon-controller/releases/ 
 RUN chmod 755 /usr/local/bin/photon
 
 RUN /usr/local/bin/update_enaml.sh
+RUN chown -R ops: $ENAML
 
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
