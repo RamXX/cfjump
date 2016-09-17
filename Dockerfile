@@ -49,9 +49,7 @@ RUN cd /tmp && git clone https://github.com/square/certstrap && \
     cd certstrap/ && ./build && mv bin/certstrap /usr/local/bin/ && cd /tmp && \
     rm -rf certstrap
 
-RUN cd /usr/local/bin && wget -q -O fly \
-    "$(curl -s https://api.github.com/repos/concourse/concourse/releases/latest \
-    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x fly
+RUN go get github.com/concourse/fly && mv $GOPATH/bin/fly /usr/local/bin
 
 RUN cd /usr/local/bin && wget -q -O spiff \
     "$(curl -s https://api.github.com/repos/cloudfoundry-incubator/spiff/releases/latest \
