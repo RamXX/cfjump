@@ -49,10 +49,10 @@ First, make sure you can run instances as a regular unprivileged user. This cont
 
 The included `cfj` script make the operation of virtual jumpboxes easy. I suggest you copy it to your $PATH and use it directly. The operation is:
 
-- `cfj list` to list the running containers.
+- `cfj list` (or simply `cfj` with no arguments) to list the running containers.
 - `cfj <name>` to either create or enter a container.
 - `cfj kill <name>` to delete a running container. The associated shared volume
-won't be deleted. That needs to be done manually if desired.
+won't be deleted. That needs to be done manually if desired. You can also specify `cfj kill all`, which will destroy all running containers.
 
 Without the script, you can manually run a brand new instance:
 
