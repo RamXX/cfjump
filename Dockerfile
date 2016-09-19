@@ -52,6 +52,10 @@ RUN cd /tmp && git clone https://github.com/square/certstrap && \
 
 RUN go get github.com/concourse/fly && mv $GOPATH/bin/fly /usr/local/bin
 
+RUN cd /usr/local/bin && wget -q -O pivnet \
+    "$(curl -s https://api.github.com/repos/pivotal-cf/go-pivnet/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x pivnet
+
 RUN cd /usr/local/bin && wget -q -O spiff \
     "$(curl -s https://api.github.com/repos/cloudfoundry-incubator/spiff/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x spiff

@@ -3,7 +3,7 @@ Jumpbox Docker image with all required tools to operate and install Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.4 includes:
+v0.5 includes:
 
 - Ubuntu:xenial official base image
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
@@ -13,6 +13,7 @@ v0.4 includes:
 - `cf` CLI (latest)
 - Golang (1.7.1)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
+- [PivNet CLI](https://github.com/pivotal-cf/go-pivnet) `pivnet` (experimental, early Alpha) CLI (latest)
 - [Vault](https://www.vaultproject.io/) (latest)
 - [Terraform](https://www.terraform.io/) (0.7.3)
 - `safe` CLI, [an alternative Vault CLI](https://github.com/starkandwayne/safe) (latest)
@@ -40,7 +41,7 @@ Or if you prefer to build it yourself:
 ```
 git clone https://github.com/RamXX/cfjump
 cd cfjump
-docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.4 .
+docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.5 .
 docker push ramxx/cfjump
 ```
 

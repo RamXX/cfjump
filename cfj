@@ -1,13 +1,13 @@
 #!/bin/bash
 
 list_env(){
-    docker ps -a --format="{{.Names}}"
+    docker ps -a --format="{{.Names}}" | grep "cfj-" | sed 's/cfj-//g'
 }
 
 kill_env(){
   env=$(basename "$1")
-  if [ ! -z "$(docker ps -a | grep "$env")" ]; then
-    echo $(docker rm "$env") killed
+  if [ ! -z "$(docker ps -a | grep "cfj-$env")" ]; then
+    echo $(docker rm "cfj-$env" | sed 's/cfj-//g') killed
   else
     echo "Environment $env doesn't exist"
     exit 2
@@ -16,12 +16,12 @@ kill_env(){
 
 enter_env(){
   if [ ! -z "$(docker ps -a | grep "$env")" ]; then
-    docker start -ai "$env"
+    docker start -ai "cfj-$env"
   else
     cd $HOME
     mkdir -p "$env" && touch $env/.touchfile
     echo "export PS1=\"$env \$ \"" >> $env/.bashrc
-    docker run --name="$env" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
+    docker run --name="cfj-$env" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
   fi
 }
 
