@@ -6,31 +6,29 @@
 download_omg(){
   local i
 
-  echo "Upgrading from version $existing_version to $omg_ghub_version."
+  echo "Upgrading from version $omg_existing_version to $omg_ghub_version."
   echo "Downloading Enaml omg and cloud-configs..."
   cd $CCONF
   for i in \
       $(curl -s "https://api.github.com/repos/enaml-ops/omg-cli/releases/latest" \
       | jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
-          wget -q $i
+  wget -q $i -O $(basename $i)
   done
   chmod +x omg-$ARCH
   mv omg-$ARCH "$OMGBIN/omg-$ARCH"
   ln -f -s "$OMGBIN/omg-$ARCH" "$OMGBIN/omg"
-  echo "$omg_ghub_version" > "$ENAML/.omg_version"
 }
 
 download_products(){
   local i
 
-  echo "Upgrading from version $existing_version to $prod_ghub_version."
+  echo "Upgrading from version $prod_existing_version to $prod_ghub_version."
   echo "Downloading Enaml products..."
   cd $PROD
   for i in $(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/releases/latest" \
       |jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
-          wget -q $i
+  wget -q $i -O $(basename $i)
   done
-  echo "$prod_ghub_version" > $ENAML/.prod_version
 }
 
 register_cloudconfigs(){
@@ -65,31 +63,32 @@ mkdir -p $PROD
 mkdir -p $CCONF
 mkdir -p $OMGBIN
 
+cd $HOME
+
 omg_ghub_version=$(curl -s "https://api.github.com/repos/enaml-ops/omg-cli/releases/latest" | jq --raw-output '.tag_name')
 prod_ghub_version=$(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/releases/latest" | jq --raw-output '.tag_name')
 
-if [ -f "$ENAML/.omg_version" ] ; then
-   existing_version=$(cat $ENAML/.omg_version)
-   if [ "$omg_ghub_version" == "$existing_version" ] ; then
-     echo "No new omg versions."
+if [ -f "$HOME/bin/omg-$ARCH" ]; then
+   omg_existing_version=$(omg -version|awk '{print $3}'|cut -d'-' -f1)
+   if [ "$omg_ghub_version" != "$omg_existing_version" ] ; then
+     download_omg
    else
-      download_omg
+     echo "No new omg versions."
    fi
 else
-   existing_version="Nada"
+   omg_existing_version="v0.0.0"
    download_omg
 fi
 
-if [ -f "$ENAML/.prod_version" ] ; then
-   existing_version=$(cat $ENAML/.prod_version)
-   if [ "$prod_ghub_version" == "$existing_version" ] ; then
-     echo "No new product versions."
-   else
-     download_products
-   fi
-else
-   existing_version="Nada"
+for x in $(omg list-products|grep version:|awk '{print $7}'|cut -d'-' -f1) ; do prod_existing_version=$x; done
+
+if [ -z "$prod_existing_version" ] ; then 
+   prod_existing_version="v0.0.0"
    download_products
+elif [ "$prod_existing_version" !=  "$prod_ghub_version" ] ; then 
+   download_products
+else
+   echo "No new product versions"
 fi
 
 rm -rf $PLUGINS
