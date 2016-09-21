@@ -3,7 +3,7 @@ Jumpbox Docker image with all required tools to operate and install Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.5 includes:
+v0.6 includes:
 
 - Ubuntu:xenial official base image
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
@@ -23,9 +23,9 @@ v0.5 includes:
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
 - OpenStack CLI (latest)
 - [Photon Controller](https://github.com/vmware/photon-controller) CLI (latest)
-- [Enaml](http://enaml.pezapp.io/) (latest). All cloudconfigs and all plugins available.
+- [Enaml](http://enaml.pezapp.io/) (update program only).
 
-For Enaml, since it's in very active development, you can use the `$HOME/bin/update_enaml.sh` to dynamically update and register the latest versions on demand. Of course, this is valid only for the current instance of the container. Newer versions from Docker Hub will always include the latest available Enaml releases.
+For Enaml, since it's in very active development, you need to use the `$HOME/bin/update_enaml.sh` to dynamically update and register the latest versions on demand. Of course, this will download Enaml only for the current instance of the container.
 
 The $ENAML variable is the location where the Enaml packages will be downloaded to, and it's mandatory. In the container, it is set to `/opt/enaml` by default.
 
@@ -41,7 +41,7 @@ Or if you prefer to build it yourself:
 ```
 git clone https://github.com/RamXX/cfjump
 cd cfjump
-docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.5 .
+docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.6 .
 docker push ramxx/cfjump
 ```
 
