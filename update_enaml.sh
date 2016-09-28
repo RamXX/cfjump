@@ -1,7 +1,7 @@
 #!/bin/bash
 # updates Enaml
 
-# ARCH can be either $ARCH or osx at the moment.
+# ARCH can be either linux or osx at the moment.
 
 download_omg(){
   local i
@@ -47,23 +47,32 @@ register_products(){
   done
 }
 
+#######
 # Main
+#######
+
 if [ -z "$ENAML" ]; then
   echo "Please set the \$ENAML variable. This is the directory where Enaml will be installed. This program will overwrite that directory."
   exit 1
 fi
 
+if [ -z "$OMG_PLUGIN_DIR" ]; then
+  OMG_PLUGIN_DIR=$HOME
+  echo \$OMG_PLUGIN_DIR not specified. Set to $HOME.
+fi
+
 ARCH=linux
 PROD=$ENAML/products
 CCONF=$ENAML/cloudconfig
-PLUGINS=$HOME/.plugins
+PLUGINS=$OMG_PLUGIN_DIR/.plugins
 OMGBIN=$HOME/bin
 
 mkdir -p $PROD
 mkdir -p $CCONF
 mkdir -p $OMGBIN
 
-cd $HOME
+CD=$(pwd)
+cd $OMG_PLUGIN_DIR
 
 omg_ghub_version=$(curl -s "https://api.github.com/repos/enaml-ops/omg-cli/releases/latest" | jq --raw-output '.tag_name')
 prod_ghub_version=$(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/releases/latest" | jq --raw-output '.tag_name')
@@ -94,3 +103,6 @@ fi
 rm -rf $PLUGINS
 register_cloudconfigs
 register_products
+cd $CD
+
+# EOF
