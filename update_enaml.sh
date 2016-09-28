@@ -32,7 +32,7 @@ download_products(){
 }
 
 register_cloudconfigs(){
-  cd $HOME
+  cd $OMG_PLUGIN_DIR
   echo "Registering cloud configs..."
   find $CCONF -type f -print | while read i; do \
        $OMGBIN/omg register-plugin -type cloudconfig -pluginpath $i
@@ -40,7 +40,7 @@ register_cloudconfigs(){
 }
 
 register_products(){
-  cd $HOME
+  cd $OMG_PLUGIN_DIR
   echo "Registering products..."
   find $PROD -type f -print | while read i; do
        $OMGBIN/omg register-plugin -type product -pluginpath $i
