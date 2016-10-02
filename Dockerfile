@@ -40,7 +40,7 @@ RUN wget $(wget -O- -q https://www.vaultproject.io/downloads.html | grep linux_a
 RUN chmod 755 /usr/local/bin/vault
 
 RUN cd /usr/local/bin/ && curl -o terraform.zip \
-    "https://releases.hashicorp.com/terraform/0.7.3/terraform_0.7.3_linux_amd64.zip" \
+    "https://releases.hashicorp.com/terraform/0.7.4/terraform_0.7.4_linux_amd64.zip" \
     && unzip terraform.zip && rm -f terraform.zip
 
 RUN gem install bosh_cli --no-ri --no-rdoc
@@ -67,6 +67,14 @@ RUN cd /usr/local/bin && wget -q -O spruce \
 RUN cd /usr/local/bin && wget -q -O safe \
     "$(curl -s https://api.github.com/repos/starkandwayne/safe/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x safe
+
+RUN cd /usr/local/bin && wget -q -O asg-creator \
+    "$(curl -s https://api.github.com/repos/cloudfoundry-incubator/asg-creator/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x asg-creator
+
+RUN cd /usr/local/bin && wget -q -O cf-mgmt \
+    "$(curl -s https://api.github.com/repos/pivotalservices/cf-mgmt/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x cf-mgmt
 
 RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis" > /usr/bin/genesis \
     && chmod 0755 /usr/bin/genesis

@@ -1,7 +1,5 @@
 #!/bin/bash
-# updates Enaml
-
-# ARCH can be either linux or osx at the moment.
+# updates Enaml and [re-]registers the plugins
 
 download_omg(){
   local i
@@ -12,7 +10,7 @@ download_omg(){
   for i in \
       $(curl -s "https://api.github.com/repos/enaml-ops/omg-cli/releases/latest" \
       | jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
-  wget -q $i -O $(basename $i)
+  curl -s -L -O $(basename $i) $i
   done
   chmod +x omg-$ARCH
   mv omg-$ARCH "$OMGBIN/omg-$ARCH"
@@ -27,7 +25,7 @@ download_products(){
   cd $PROD
   for i in $(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/releases/latest" \
       |jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
-  wget -q $i -O $(basename $i)
+  curl -s -L -O $(basename $i) $i
   done
 }
 
@@ -61,11 +59,25 @@ if [ -z "$OMG_PLUGIN_DIR" ]; then
   echo \$OMG_PLUGIN_DIR not specified. Set to $HOME.
 fi
 
-ARCH=linux
+if [ -z "$OMGBIN" ]; then
+  OMGBIN=$HOME/bin
+  echo \$OMGBIN not specified. Set to $HOME/bin.
+fi
+
+UNAME=$(uname -s)
+
+if [ "$UNAME" == "Linux" ]; then
+   ARCH=linux
+elif [ "$UNAME" == "Darwin" ]; then
+   ARCH=osx
+else
+   echo Unsupported architecture $UNAME
+   exit 1
+fi
+
 PROD=$ENAML/products
 CCONF=$ENAML/cloudconfig
 PLUGINS=$OMG_PLUGIN_DIR/.plugins
-OMGBIN=$HOME/bin
 
 mkdir -p $PROD
 mkdir -p $CCONF
@@ -91,10 +103,10 @@ fi
 
 for x in $(omg list-products|grep version:|awk '{print $7}'|cut -d'-' -f1) ; do prod_existing_version=$x; done
 
-if [ -z "$prod_existing_version" ] ; then 
+if [ -z "$prod_existing_version" ] ; then
    prod_existing_version="v0.0.0"
    download_products
-elif [ "$prod_existing_version" !=  "$prod_ghub_version" ] ; then 
+elif [ "$prod_existing_version" !=  "$prod_ghub_version" ] ; then
    download_products
 else
    echo "No new product versions"
