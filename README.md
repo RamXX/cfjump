@@ -1,5 +1,5 @@
 # cfjump
-Jumpbox Docker image with all required tools to operate and install Cloud Foundry. It works with different workflows, but focuses primarily on [Enaml](http://enaml.pezapp.io/).
+Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different workflows, including [Enaml](http://enaml.pezapp.io/) and [Genesis](https://github.com/starkandwayne/genesis), and includes several tools to work with OpsManager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, VMware Photon Controller and OpenStack.
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
@@ -13,6 +13,7 @@ v0.8 includes:
 - `cf` CLI (latest)
 - Golang (1.7.1)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
+- [CFOps](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
 - [PivNet CLI](https://github.com/pivotal-cf/go-pivnet) `pivnet` (experimental, early Alpha) CLI (latest)
 - [Vault](https://www.vaultproject.io/) (latest)
 - [Terraform](https://www.terraform.io/) (0.7.4)
@@ -24,7 +25,7 @@ v0.8 includes:
 - OpenStack CLI (latest)
 - [Photon Controller](https://github.com/vmware/photon-controller) CLI (latest)
 - [OpsMan-cli](https://github.com/datianshi/opsman) (CLI to interact with OpsManager).
-- [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and GIT managed metadata.
+- [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and git-managed metadata.
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
 - [Enaml](http://enaml.pezapp.io/) (update program only).
 
@@ -51,7 +52,7 @@ docker push ramxx/cfjump
 ## Running
 First, make sure you can run instances as a regular unprivileged user. This container will create an internal user with uid and gid of 1000, same as the default in Ubuntu, which makes easier to share folders.
 
-The included `cfj` script make the operation of virtual jumpboxes easy. I suggest you copy it to your $PATH and use it directly. The operation is:
+The included `cfj` script make the operation of virtual jumpboxes easy. Copy it to a directory in your $PATH and use it to interact with the virtual jumpboxes. The operation is:
 
 - `cfj list` (or simply `cfj` with no arguments) to list the running containers.
 - `cfj <name>` to either create or enter a container.

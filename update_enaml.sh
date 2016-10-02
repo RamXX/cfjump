@@ -55,8 +55,10 @@ if [ -z "$ENAML" ]; then
 fi
 
 if [ -z "$OMG_PLUGIN_DIR" ]; then
-  OMG_PLUGIN_DIR=$HOME
+  export OMG_PLUGIN_DIR=$HOME
   echo \$OMG_PLUGIN_DIR not specified. Set to $HOME.
+else
+  export OMG_PLUGIN_DIR
 fi
 
 if [ -z "$OMGBIN" ]; then
