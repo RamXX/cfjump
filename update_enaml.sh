@@ -10,7 +10,7 @@ download_omg(){
   for i in \
       $(curl -s "https://api.github.com/repos/enaml-ops/omg-cli/releases/latest" \
       | jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
-  curl -s -L -O $(basename $i) $i
+  curl -s -L -O $i > $(basename $i)
   done
   chmod +x omg-$ARCH
   mv omg-$ARCH "$OMGBIN/omg-$ARCH"
@@ -25,7 +25,7 @@ download_products(){
   cd $PROD
   for i in $(curl -s "https://api.github.com/repos/enaml-ops/omg-product-bundle/releases/latest" \
       |jq --raw-output '.assets[] | .browser_download_url' | grep $ARCH); do
-  curl -s -L -O $(basename $i) $i
+  curl -s -L -O $i > $(basename $i)
   done
 }
 
