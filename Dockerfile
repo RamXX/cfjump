@@ -60,7 +60,7 @@ RUN cd /tmp && git clone https://github.com/square/certstrap && \
     cd certstrap/ && ./build && mv bin/certstrap /usr/local/bin/ && cd /tmp && \
     rm -rf certstrap
 
-RUN go get github.com/concourse/fly && mv $GOPATH/bin/fly /usr/local/bin
+RUN go get -u github.com/concourse/fly
 
 RUN cd /usr/local/bin && wget -q -O pivnet \
     "$(curl -s https://api.github.com/repos/pivotal-cf/go-pivnet/releases/latest \
