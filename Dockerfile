@@ -4,8 +4,7 @@ MAINTAINER Ramiro Salas <rsalas@pivotal.io>
 ENV HOME /home/ops
 ENV ENAML /opt/enaml
 ENV GOPATH $HOME/bin
-ENV GOROOT /usr/local/go
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:/usr/local/go/bin:$GOPATH/bin
 
 ADD update_enaml.sh /usr/local/bin
 
