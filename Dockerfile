@@ -19,12 +19,23 @@ RUN mkdir -p $HOME/bin
 RUN cp -n /etc/skel/.[a-z]* .
 
 RUN cat /etc/apt/sources.list | sed 's/archive/us.archive/g' > /tmp/s && mv /tmp/s /etc/apt/sources.list
+
 RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            build-essential git ssh curl software-properties-common dnsutils \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
            file openstack byobu tcpdump nmap less s3cmd s3curl silversearcher-ag \
-           netcat
+           netcat npm nodejs-legacy python3-pip python3-setuptools apt-utils
+
+RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
+RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+RUN apt-get update && sudo apt-get install google-cloud-sdk
+
+RUN pip3 install --upgrade pip
+
+RUN pip3 install awscli
+
+RUN npm install -g azure-cli
 
 RUN wget -q -O - "https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz" \
     | tar -C /usr/local -zx
