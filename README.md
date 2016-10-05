@@ -1,9 +1,9 @@
 # cfjump
-Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different workflows, including [Enaml](http://enaml.pezapp.io/) and others, and includes several tools to work with OpsManager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, VMware Photon Controller and OpenStack.
+Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different workflows, including [Enaml](http://enaml.pezapp.io/) and others, and includes several tools to work with OpsManager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, GCP, Azure, VMware Photon Controller and OpenStack.
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.8 includes:
+v0.9 includes:
 
 - Ubuntu:xenial official base image
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
@@ -22,7 +22,10 @@ v0.8 includes:
 - [Spiff](https://github.com/cloudfoundry-incubator/spiff) (latest)
 - [Spruce](http://spruce.cf/) (latest)
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
-- OpenStack CLI (latest)
+- OpenStack CLI (latest), both, legacy `nova`, `cinder`, `keystone`, etc commands as well as the newer `openstack` integrated CLI.
+- [Microsoft Azure CLI](https://github.com/Azure/azure-xplat-cli) (latest)
+- [Google Compute Cloud CLI](https://cloud.google.com/sdk/downloads#linux) (latest)
+- [AWS CLI](https://aws.amazon.com/cli/) (latest)
 - [Photon Controller](https://github.com/vmware/photon-controller) CLI (latest)
 - [OpsMan-cli](https://github.com/datianshi/opsman) (CLI to interact with OpsManager).
 - [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and git-managed metadata.
@@ -57,7 +60,7 @@ Or if you prefer to build it yourself:
 ```
 git clone https://github.com/RamXX/cfjump
 cd cfjump
-docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.8 .
+docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.9 .
 docker push ramxx/cfjump
 ```
 
