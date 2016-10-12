@@ -3,34 +3,46 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.9 includes:
+v0.10 includes:
 
+##### Linux
 - Ubuntu:xenial official base image
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
+- Golang (1.7.1)
+
+##### Cloud Foundry tools
 - `bosh-init` (latest)
 - [BOSH](http://bosh.io/) CLI (latest)
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
-- Golang (1.7.1)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
-- [CFOps](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
+- [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
+- [Enaml](http://enaml.pezapp.io/) (update program only). Deploy Cloud Foundry without YAML.
+
+##### Pivotal-specific
+- [cfops](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
 - [PivNet CLI](https://github.com/pivotal-cf/go-pivnet) `pivnet` (experimental, early Alpha) CLI (latest)
-- [Vault](https://www.vaultproject.io/) (latest)
+- [OpsMan-cli](https://github.com/datianshi/opsman) (CLI to interact with OpsManager).
+- [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and git-managed metadata.
+- [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) Command line utility for standing up a CloudFoundry or Concourse installation on an IAAS of your choice.
+
+##### IaaS tools
 - [Terraform](https://www.terraform.io/) (0.7.4)
-- `safe` CLI, [an alternative Vault CLI](https://github.com/starkandwayne/safe) (latest)
-- [certstrap](https://github.com/square/certstrap) (latest)
-- [Spiff](https://github.com/cloudfoundry-incubator/spiff) (latest)
-- [Spruce](http://spruce.cf/) (latest)
-- [Genesis](https://github.com/starkandwayne/genesis) (latest)
 - OpenStack CLI (latest), both, legacy `nova`, `cinder`, `keystone`, etc commands as well as the newer `openstack` integrated CLI.
 - [Microsoft Azure CLI](https://github.com/Azure/azure-xplat-cli) (latest)
 - [Google Compute Cloud CLI](https://cloud.google.com/sdk/downloads#linux) (latest)
 - [AWS CLI](https://aws.amazon.com/cli/) (latest)
 - [Photon Controller](https://github.com/vmware/photon-controller) CLI (latest)
-- [OpsMan-cli](https://github.com/datianshi/opsman) (CLI to interact with OpsManager).
-- [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and git-managed metadata.
-- [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
-- [Enaml](http://enaml.pezapp.io/) (update program only).
+
+##### Other useful tools
+- [Vault](https://www.vaultproject.io/) (latest)
+- `safe` CLI, [an alternative Vault CLI](https://github.com/starkandwayne/safe) (latest)
+- [certstrap](https://github.com/square/certstrap) (latest)
+- [Spiff](https://github.com/cloudfoundry-incubator/spiff) (latest)
+- [Spruce](http://spruce.cf/) (latest)
+- [Genesis](https://github.com/starkandwayne/genesis) (latest)
+
+
 
 For Enaml, since it's in very active development, you need to use the `$HOME/bin/update_enaml.sh` to dynamically update and register the latest versions on demand. Of course, this will only download Enaml for the current instance of the container.
 
@@ -60,7 +72,7 @@ Or if you prefer to build it yourself:
 ```
 git clone https://github.com/RamXX/cfjump
 cd cfjump
-docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.9 .
+docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.10 .
 docker push ramxx/cfjump
 ```
 
