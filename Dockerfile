@@ -3,8 +3,9 @@ MAINTAINER Ramiro Salas <rsalas@pivotal.io>
 
 ENV HOME /home/ops
 ENV ENAML /opt/enaml
-ENV GOPATH $HOME/go
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:/usr/local/go/bin:$GOPATH/bin
+ENV GOPATH /opt/go
+ENV GOBIN /opt/go/bin
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:/usr/local/go/bin:$GOBIN
 
 ADD update_enaml.sh /usr/local/bin
 
@@ -62,6 +63,8 @@ RUN cd /tmp && git clone https://github.com/square/certstrap && \
 
 RUN go get -u github.com/concourse/fly
 
+RUN go get github.com/pivotal-cf-experimental/bosh-bootloader/bbl
+
 RUN cd /usr/local/bin && wget -q -O pivnet \
     "$(curl -s https://api.github.com/repos/pivotal-cf/go-pivnet/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x pivnet
@@ -102,7 +105,7 @@ RUN cd /tmp && wget -q -O opsman.tgz \
 RUN baseURL=$(wget -q -O- https://github.com/vmware/photon-controller/releases/ | grep -m 1 photon-linux | perl -ne 'print map("$_\n", m/href=\".*?\"/g)' |  tr -d '"' | awk -F "href=" '{print$2}') && wget https://github.com$baseURL -O /usr/local/bin/photon
 RUN chmod 755 /usr/local/bin/photon
 
-RUN chown -R ops: $ENAML
+RUN chown -R ops: /opt
 
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
