@@ -65,6 +65,8 @@ RUN go get -u github.com/concourse/fly
 
 RUN go get github.com/pivotal-cf-experimental/bosh-bootloader/bbl
 
+RUN go get github.com/compozed/deployadactyl
+
 RUN cd /usr/local/bin && wget -q -O pivnet \
     "$(curl -s https://api.github.com/repos/pivotal-cf/go-pivnet/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x pivnet
@@ -113,5 +115,7 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 USER ops
+
+RUN /usr/local/bin/update_enaml.sh
 
 CMD ["/bin/bash"]

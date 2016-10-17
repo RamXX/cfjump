@@ -3,7 +3,7 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.10 includes:
+v0.11 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image
@@ -18,6 +18,7 @@ v0.10 includes:
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
 - [Enaml](http://enaml.pezapp.io/) (update program only). Deploy Cloud Foundry without YAML.
+- [Deployadactyl](https://github.com/compozed/deployadactyl) (latest). Go library for deploying applications to multiple Cloud Foundry instances.
 
 ##### Pivotal-specific
 - [cfops](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
@@ -72,7 +73,7 @@ Or if you prefer to build it yourself:
 ```
 git clone https://github.com/RamXX/cfjump
 cd cfjump
-docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.10 .
+docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.11 .
 docker push ramxx/cfjump
 ```
 
