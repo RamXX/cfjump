@@ -22,9 +22,9 @@ RUN cat /etc/apt/sources.list | sed 's/archive/us.archive/g' > /tmp/s && mv /tmp
 
 RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
-           build-essential git ssh curl software-properties-common dnsutils \
+           build-essential git ssh software-properties-common dnsutils \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
-           file openstack byobu tcpdump nmap less s3cmd s3curl silversearcher-ag \
+           file openstack tcpdump nmap less s3cmd s3curl \
            netcat npm nodejs-legacy python3-pip python3-setuptools apt-utils
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -56,17 +56,16 @@ RUN cd /usr/local/bin/ && curl -o terraform.zip \
 
 RUN gem install bosh_cli --no-ri --no-rdoc
 RUN gem install cf-uaac --no-rdoc --no-ri
+RUN go get -u github.com/cloudfoundry/bosh-cli
 
-RUN cd /tmp && git clone https://github.com/square/certstrap && \
-    cd certstrap/ && ./build && mv bin/certstrap /usr/local/bin/ && cd /tmp && \
-    rm -rf certstrap
+RUN go get -u github.com/square/certstrap
 
 RUN go get -u github.com/concourse/fly
 
 RUN go get github.com/compozed/deployadactyl
 
 RUN cd /usr/local/bin && wget -q -O pivnet \
-    "$(curl -s https://api.github.com/repos/pivotal-cf/go-pivnet/releases/latest \
+    "$(curl -s https://api.github.com/repos/pivotal-cf/pivnet-cli/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x pivnet
 
 RUN cd /usr/local/bin && wget -q -O bbl \
@@ -85,17 +84,13 @@ RUN cd /usr/local/bin && wget -q -O spruce \
     "$(curl -s https://api.github.com/repos/geofffranks/spruce/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x spruce
 
-RUN cd /usr/local/bin && wget -q -O safe \
-    "$(curl -s https://api.github.com/repos/starkandwayne/safe/releases/latest \
-    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x safe
+RUN go get -u github.com/starkandwayne/safe
 
 RUN cd /usr/local/bin && wget -q -O asg-creator \
     "$(curl -s https://api.github.com/repos/cloudfoundry-incubator/asg-creator/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x asg-creator
 
-RUN cd /usr/local/bin && wget -q -O cf-mgmt \
-    "$(curl -s https://api.github.com/repos/pivotalservices/cf-mgmt/releases/latest \
-    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x cf-mgmt
+RUN go get github.com/pivotalservices/cf-mgmt
 
 RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis" > /usr/bin/genesis \
     && chmod 0755 /usr/bin/genesis
@@ -111,8 +106,10 @@ RUN chmod 755 /usr/local/bin/photon
 
 RUN chown -R ops: /opt
 
+RUN apt-get -y purge build-essential libroot-bindings-ruby-dev
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN rm -rf $GOPATH/src $GOPATH/pkg
 
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 

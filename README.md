@@ -3,16 +3,17 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.11 includes:
+v0.12 includes:
 
 ##### Linux
-- Ubuntu:xenial official base image
+- Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
 - Golang (1.7.1)
 
 ##### Cloud Foundry tools
 - `bosh-init` (latest)
 - [BOSH](http://bosh.io/) CLI (latest)
+- [`bosh-cli`](https://github.com/cloudfoundry/bosh-cli) (latest) - Alpha version of the new Golang BOSH CLI
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
@@ -73,8 +74,7 @@ Or if you prefer to build it yourself:
 ```
 git clone https://github.com/RamXX/cfjump
 cd cfjump
-docker build -t ramxx/cfjump:latest -t ramxx/cfjump:v0.11 .
-docker push ramxx/cfjump
+docker build -t ramxx/cfjump:latest .
 ```
 
 ## Limitations
