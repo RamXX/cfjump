@@ -108,8 +108,8 @@ RUN chown -R ops: /opt
 
 RUN apt-get -y purge build-essential libroot-bindings-ruby-dev
 RUN apt-get clean && apt-get -y autoremove
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN rm -rf $GOPATH/src $GOPATH/pkg
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
+RUN rm -rf $GOPATH/src $GOPATH/pkg /usr/local/go/pkg /usr/local/go/src
 
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 
