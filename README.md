@@ -3,6 +3,8 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
+**Warning:** This is a large, 3.2GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
+
 v0.15 includes:
 
 ##### Linux
