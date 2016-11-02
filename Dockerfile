@@ -64,7 +64,9 @@ RUN go get -u github.com/square/certstrap
 
 RUN go get -u github.com/concourse/fly
 
-RUN go get github.com/compozed/deployadactyl
+RUN go get -u github.com/compozed/deployadactyl
+
+RUN go get -u github.com/spf13/hugo
 
 RUN cd /usr/local/bin && wget -q -O pivnet \
     "$(curl -s https://api.github.com/repos/pivotal-cf/pivnet-cli/releases/latest \

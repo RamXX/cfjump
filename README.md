@@ -43,6 +43,7 @@ v0.13 includes:
 - [Spiff](https://github.com/cloudfoundry-incubator/spiff) (latest)
 - [Spruce](http://spruce.cf/) (latest)
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
+- [Hugo](http://gohugo.io/) (latest) Static site generator written in Go. Ideal for documentation projects.
 
 
 
