@@ -3,7 +3,7 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.12 includes:
+v0.13 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -18,7 +18,7 @@ v0.12 includes:
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
-- [Enaml](http://enaml.pezapp.io/) (update program only). Deploy Cloud Foundry without YAML.
+- [Enaml](http://enaml.pezapp.io/) (latest). Deploy Cloud Foundry without YAML.
 - [Deployadactyl](https://github.com/compozed/deployadactyl) (latest). Go library for deploying applications to multiple Cloud Foundry instances.
 
 ##### Pivotal-specific
@@ -46,7 +46,7 @@ v0.12 includes:
 
 
 
-For Enaml, since it's in very active development, you need to use the `$HOME/bin/update_enaml.sh` to dynamically update and register the latest versions on demand. Of course, this will only download Enaml for the current instance of the container.
+For Enaml, since it's in very active development, you may want to use the `update_enaml.sh` script to dynamically update and register the latest versions on demand. Of course, this will only download Enaml for the current instance of the container. The latest image at the time of the build was included.
 
 The $ENAML variable is the location where the Enaml packages will be downloaded to, and it's mandatory. In the container, it is set to `/opt/enaml` by default.
 
