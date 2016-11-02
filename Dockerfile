@@ -11,8 +11,9 @@ ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:
 
 ADD update_enaml.sh /usr/local/bin
 
-RUN mkdir $HOME
-RUN mkdir $ENAML
+RUN mkdir -p $HOME
+RUN mkdir -p $ENAML
+RUN mkdir -p $OMG_PLUGIN_DIR
 RUN useradd -M -d $HOME ops
 VOLUME $HOME
 RUN chown -R ops: $HOME
