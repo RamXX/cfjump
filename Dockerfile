@@ -31,7 +31,7 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-RUN apt-get update && sudo apt-get install google-cloud-sdk
+RUN apt-get update && sudo apt-get -y --no-install-recommends install google-cloud-sdk
 
 RUN pip3 install --upgrade pip
 
@@ -57,8 +57,12 @@ RUN cd /usr/local/bin/ && curl -o terraform.zip \
     && unzip terraform.zip && rm -f terraform.zip
 
 RUN gem install bosh_cli --no-ri --no-rdoc
+
 RUN gem install cf-uaac --no-rdoc --no-ri
+
 RUN go get -u github.com/cloudfoundry/bosh-cli
+
+RUN go get -u github.com/pivotal-cf/om
 
 RUN go get -u github.com/square/certstrap
 
@@ -109,8 +113,6 @@ RUN baseURL=$(wget -q -O- https://github.com/vmware/photon-controller/releases/ 
 RUN chmod 755 /usr/local/bin/photon
 RUN update_enaml.sh
 RUN chown -R ops: /opt
-RUN go get -u github.com/pivotal-cf/om
-RUN apt-get -y purge build-essential libroot-bindings-ruby-dev
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
 RUN rm -rf $GOPATH/src $GOPATH/pkg /usr/local/go/pkg /usr/local/go/src
