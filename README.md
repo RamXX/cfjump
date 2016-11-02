@@ -3,7 +3,7 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.14 includes:
+v0.15 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -27,6 +27,7 @@ v0.14 includes:
 - [OpsMan-cli](https://github.com/datianshi/opsman) (CLI to interact with OpsManager).
 - [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and git-managed metadata.
 - [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) Command line utility for standing up a CloudFoundry or Concourse installation on an IAAS of your choice.
+- [om](https://github.com/pivotal-cf/om) Small sharp tool for deploying products to ops-manager.
 
 ##### IaaS tools
 - [Terraform](https://www.terraform.io/) (0.7.4)
