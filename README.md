@@ -3,7 +3,7 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-v0.13 includes:
+v0.14 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
