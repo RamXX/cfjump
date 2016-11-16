@@ -83,7 +83,7 @@ RUN cd /usr/local/bin && wget -q -O bbl \
 
 RUN cd /usr/local/bin && wget -q -O cfops \
     "$(curl -s https://api.github.com/repos/pivotalservices/cfops/releases/latest \
-    |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cfops
+    |jq --raw-output '.assets[] | .browser_download_url')" && chmod +x cfops
 
 RUN cd /usr/local/bin && wget -q -O spiff \
     "$(curl -s https://api.github.com/repos/cloudfoundry-incubator/spiff/releases/latest \
