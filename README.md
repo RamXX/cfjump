@@ -31,6 +31,7 @@ v0.16 includes:
 - [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) Command line utility for standing up a CloudFoundry or Concourse installation on an IAAS of your choice.
 - [om](https://github.com/pivotal-cf/om) Small sharp tool for deploying products to ops-manager.
 - [magnet](https://github.com/pivotalservices/magnet) Better AZ distribution for vSphere.
+- [autopilot](https://github.com/xchapter7x/autopilot) cf plugin for hands-off, zero downtime application deploys.
 
 ##### IaaS tools
 - [Terraform](https://www.terraform.io/) (0.7.4)
