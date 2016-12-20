@@ -28,11 +28,13 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            build-essential git ssh software-properties-common dnsutils \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
            file openstack tcpdump nmap less s3cmd s3curl \
-           netcat npm nodejs-legacy python3-pip python3-setuptools apt-utils
+           netcat npm nodejs-legacy python3-pip python3-setuptools \
+           apt-utils libdap-bin
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-RUN apt-get update && sudo apt-get -y --no-install-recommends install google-cloud-sdk
+RUN add-apt-repository -y ppa:masterminds/glide
+RUN apt-get update && sudo apt-get -y --no-install-recommends install google-cloud-sdk glide
 
 RUN pip3 install --upgrade pip
 
@@ -72,6 +74,9 @@ RUN go get -u github.com/concourse/fly
 RUN go get -u github.com/compozed/deployadactyl
 
 RUN go get -u github.com/spf13/hugo
+
+RUN go get -d -u github.com/pivotalservices/magnet
+RUN cd $GOPATH/src/github.com/pivotalservices/magnet && glide install && cd cmd/magnet && go install
 
 RUN cd /usr/local/bin && wget -q -O pivnet \
     "$(curl -s https://api.github.com/repos/pivotal-cf/pivnet-cli/releases/latest \
@@ -116,7 +121,7 @@ RUN update_enaml.sh
 RUN chown -R ops: /opt $HOME
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
-RUN rm -rf $GOPATH/src $GOPATH/pkg /usr/local/go/pkg /usr/local/go/src
+#RUN rm -rf $GOPATH/src $GOPATH/pkg /usr/local/go/pkg /usr/local/go/src
 
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 

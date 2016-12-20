@@ -5,7 +5,7 @@ It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM
 
 **Warning:** This is a large, 3.2GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
 
-v0.15 includes:
+v0.16 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -30,6 +30,7 @@ v0.15 includes:
 - [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and git-managed metadata.
 - [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) Command line utility for standing up a CloudFoundry or Concourse installation on an IAAS of your choice.
 - [om](https://github.com/pivotal-cf/om) Small sharp tool for deploying products to ops-manager.
+- [magnet](https://github.com/pivotalservices/magnet) Better AZ distribution for vSphere.
 
 ##### IaaS tools
 - [Terraform](https://www.terraform.io/) (0.7.4)
