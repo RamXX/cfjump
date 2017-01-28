@@ -26,7 +26,6 @@ v0.16 includes:
 ##### Pivotal-specific
 - [cfops](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
 - [PivNet CLI](https://github.com/pivotal-cf/go-pivnet) `pivnet` (experimental, early Alpha) CLI (latest)
-- [OpsMan-cli](https://github.com/datianshi/opsman) (CLI to interact with OpsManager).
 - [cf-mgmt](https://github.com/pivotalservices/cf-mgmt) (latest) Go automation for managing orgs, spaces that can be driven from concourse pipeline and git-managed metadata.
 - [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) Command line utility for standing up a CloudFoundry or Concourse installation on an IAAS of your choice.
 - [om](https://github.com/pivotal-cf/om) Small sharp tool for deploying products to ops-manager.
@@ -45,7 +44,7 @@ v0.16 includes:
 - [Vault](https://www.vaultproject.io/) (latest)
 - `safe` CLI, [an alternative Vault CLI](https://github.com/starkandwayne/safe) (latest)
 - [certstrap](https://github.com/square/certstrap) (latest)
-- [Spiff](https://github.com/cloudfoundry-incubator/spiff) (latest)
+- [Spiff](https://github.com/cloudfoundry-incubator/spiff) (1.0.8)
 - [Spruce](http://spruce.cf/) (latest)
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
 - [Hugo](http://gohugo.io/) (latest) Static site generator written in Go. Ideal for documentation projects.
