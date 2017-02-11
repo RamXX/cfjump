@@ -78,6 +78,10 @@ RUN go get -u github.com/spf13/hugo
 RUN go get -d -u github.com/pivotalservices/magnet
 RUN cd $GOPATH/src/github.com/pivotalservices/magnet && glide install && cd cmd/magnet && go install
 
+RUN cd /usr/local/bin && wget -q -O omg-transform \
+    "$(curl -s https://api.github.com/repos/enaml-ops/omg-transform/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep omg-transform-linux)" && chmod +x omg-transform
+
 RUN cd /usr/local/bin && wget -q -O pivnet \
     "$(curl -s https://api.github.com/repos/pivotal-cf/pivnet-cli/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x pivnet

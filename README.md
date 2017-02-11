@@ -3,9 +3,9 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 3.2GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
+**Warning:** This is a large, 3.62GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
 
-v0.16 includes:
+v0.17 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -20,7 +20,8 @@ v0.16 includes:
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
-- [Enaml](http://enaml.pezapp.io/) (latest). Deploy Cloud Foundry without YAML.
+- [Enaml](https://github.com/enaml-ops/omg-cli) (latest). Deploy Cloud Foundry without YAML.
+- [omg-transform](https://github.com/enaml-ops/omg-transform) (latest). An enaml based tool that allows you to perform transformations on bosh manifests.
 - [Deployadactyl](https://github.com/compozed/deployadactyl) (latest). Go library for deploying applications to multiple Cloud Foundry instances.
 
 ##### Pivotal-specific
