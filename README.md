@@ -1,11 +1,11 @@
 # cfjump
-Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different workflows, including [Enaml](http://enaml.pezapp.io/) and others, and includes several tools to work with OpsManager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, GCP, Azure, VMware Photon Controller and OpenStack.
+Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different install workflows, and includes several tools to work with Ops Manager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, GCP, Azure, VMware Photon Controller and OpenStack.
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 3.62GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
+**Warning:** This is a large, 4.81GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
 
-v0.17 includes:
+v0.18 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -23,6 +23,7 @@ v0.17 includes:
 - [Enaml](https://github.com/enaml-ops/omg-cli) (latest). Deploy Cloud Foundry without YAML.
 - [omg-transform](https://github.com/enaml-ops/omg-transform) (latest). An enaml based tool that allows you to perform transformations on bosh manifests.
 - [Deployadactyl](https://github.com/compozed/deployadactyl) (latest). Go library for deploying applications to multiple Cloud Foundry instances.
+- [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (0.5.1)(pre-release) a command line interface to interact with CredHub servers.
 
 ##### Pivotal-specific
 - [cfops](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
@@ -32,6 +33,8 @@ v0.17 includes:
 - [om](https://github.com/pivotal-cf/om) Small sharp tool for deploying products to ops-manager.
 - [magnet](https://github.com/pivotalservices/magnet) Better AZ distribution for vSphere.
 - [autopilot](https://github.com/xchapter7x/autopilot) cf plugin for hands-off, zero downtime application deploys.
+- [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM.
+- [cloudfoundry-top-plugin](https://github.com/ECSTeam/cloudfoundry-top-plugin) cf interactive plugin for showing live statistics of the targeted Cloud Foundry foundation. By ECS team.
 
 ##### IaaS tools
 - [Terraform](https://www.terraform.io/) (0.7.4)
@@ -52,9 +55,6 @@ v0.17 includes:
 
 
 
-For Enaml, since it's in very active development, you may want to use the `update_enaml.sh` script to dynamically update and register the latest versions on demand. Of course, this will only download Enaml for the current instance of the container. The latest image at the time of the build was included.
-
-The $ENAML variable is the location where the Enaml packages will be downloaded to, and it's mandatory. In the container, it is set to `/opt/enaml` by default.
 
 ## Running
 First, make sure you can run instances as a regular unprivileged user. This container will create an internal user with uid and gid of 1000, same as the default in Ubuntu, which makes easier to share folders with the host.
@@ -89,6 +89,11 @@ Every instance of a container can only be used by a single user at the time. If 
 It may be possible to use an `sshd` daemon to support multiple sessions, but that's outside the scope of this work.
 
 Additionally, `man` pages are not installed in this image to decrease its size. Typically, man pages can be accessed on the Docker host itself or easily found online.
+
+# Note for Enaml
+For Enaml, since it's in very active development, you may want to use the `update_enaml.sh` script to dynamically update and register the latest versions on demand. Of course, this will only download Enaml for the current instance of the container. The latest image at the time of the build was included.
+
+The $ENAML variable is the location where the Enaml packages will be downloaded to, and it's mandatory. In the container, it is set to `/opt/enaml` by default.
 
 ## Contributing
 Please submit pull requests with any correction or improvement you want to do. I hope this is useful to others.

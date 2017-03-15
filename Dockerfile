@@ -121,6 +121,15 @@ RUN cd $GOBIN && wget -q -O autopilot \
     "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
 RUN echo y | cf install-plugin $GOBIN/autopilot
 
+#RUN cf add-plugin-repo CF-Community http://plugins.cloudfoundry.org
+RUN cf install-plugin -f -r CF-Community "top"
+
+RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.5.1/credhub-linux-0.5.1.tgz && chmod 0755 credhub
+
+RUN go get github.com/pivotal-cf/cliaas && \
+    cd $GOPATH/src/github.com/pivotal-cf/cliaas && \
+    glide install && go install github.com/pivotal-cf/cliaas/cmd/cliaas
+
 RUN chown -R ops: /opt $HOME
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
