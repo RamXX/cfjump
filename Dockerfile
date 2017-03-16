@@ -10,6 +10,7 @@ ENV GOBIN /opt/go/bin
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:/usr/local/go/bin:$GOBIN:$OMGBIN
 
 ADD update_enaml.sh /usr/local/bin
+ADD install_cf_plugins.sh /usr/local/bin
 
 RUN mkdir -p $HOME
 RUN mkdir -p $ENAML
@@ -119,9 +120,6 @@ RUN update_enaml.sh
 
 RUN cd $GOBIN && wget -q -O autopilot \
     "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
-RUN echo y | cf install-plugin $GOBIN/autopilot
-
-RUN cf install-plugin -f -r CF-Community "top"
 
 RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.5.1/credhub-linux-0.5.1.tgz && chmod 0755 credhub
 
@@ -132,8 +130,8 @@ RUN go get github.com/pivotal-cf/cliaas && \
 RUN cd /usr/local/bin && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
     chmod 0755 kubectl
-RUN cd /tmp && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.3.6/cf-mysql-plugin-linux-amd64 && \
-    chmod 0755 ./cf-mysql-plugin && cf install-plugin -f ./cf-mysql-plugin
+RUN cd $GOBIN && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.3.6/cf-mysql-plugin-linux-amd64 && \
+    chmod 0755 ./cf-mysql-plugin 
 
 RUN chown -R ops: /opt $HOME
 RUN apt-get clean && apt-get -y autoremove

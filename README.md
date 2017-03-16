@@ -70,6 +70,9 @@ won't be deleted**. That needs to be done manually if desired. You can also spec
 
 You can use different jumpbox instances for different sessions, users, environments, etc, as long as you use different shared folders.
 
+## `cf` CLI plugins
+Plugins are there but they need to be installed by hand using the `install_cf_plugins.sh` command.
+
 ## Building
 You can just get this image from Docker Hub by running:
 
