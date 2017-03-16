@@ -5,7 +5,7 @@ It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM
 
 **Warning:** This is a large, 4.81GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
 
-v0.18 includes:
+v0.19 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -14,8 +14,8 @@ v0.18 includes:
 
 ##### Cloud Foundry tools
 - `bosh-init` (latest)
-- [BOSH](http://bosh.io/) CLI (latest)
-- [`bosh-cli`](https://github.com/cloudfoundry/bosh-cli) (latest) - Alpha version of the new Golang BOSH CLI
+- [BOSH](http://bosh.io/) Ruby BOSH CLI (latest) called by the command name `bosh`.
+- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (latest) - New BOSH 2.0 Golang CLI. Binary called `bosh2` to avoid confusion with the Ruby CLI.
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
@@ -24,6 +24,7 @@ v0.18 includes:
 - [omg-transform](https://github.com/enaml-ops/omg-transform) (latest). An enaml based tool that allows you to perform transformations on bosh manifests.
 - [Deployadactyl](https://github.com/compozed/deployadactyl) (latest). Go library for deploying applications to multiple Cloud Foundry instances.
 - [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (0.5.1)(pre-release) a command line interface to interact with CredHub servers.
+- [`cf mysql` CLI plugin](https://github.com/andreasf/cf-mysql-plugin) (1.3.6) makes it easy to connect the mysql command line client to any MySQL-compatible database used by Cloud Foundry apps.
 
 ##### Pivotal-specific
 - [cfops](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
@@ -52,6 +53,7 @@ v0.18 includes:
 - [Spruce](http://spruce.cf/) (latest)
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
 - [Hugo](http://gohugo.io/) (latest) Static site generator written in Go. Ideal for documentation projects.
+- [kubectl](https://kubernetes.io/docs/user-guide/prereqs/) Kubernetes CLI. Useful for [Kubo](https://pivotal.io/kubo).
 
 
 

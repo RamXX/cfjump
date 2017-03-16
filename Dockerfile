@@ -29,7 +29,7 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
            file openstack tcpdump nmap less s3cmd s3curl \
            netcat npm nodejs-legacy python3-pip python3-setuptools \
-           apt-utils libdap-bin
+           apt-utils libdap-bin mysql-client
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
@@ -63,8 +63,6 @@ RUN gem install bosh_cli --no-ri --no-rdoc
 
 RUN gem install cf-uaac --no-rdoc --no-ri
 
-RUN go get -u github.com/cloudfoundry/bosh-cli
-
 RUN go get -u github.com/pivotal-cf/om
 
 RUN go get -u github.com/square/certstrap
@@ -77,6 +75,8 @@ RUN go get -u github.com/spf13/hugo
 
 RUN go get -d -u github.com/pivotalservices/magnet
 RUN cd $GOPATH/src/github.com/pivotalservices/magnet && glide install && cd cmd/magnet && go install
+
+RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.1-linux-amd64 && chmod 0755 bosh2
 
 RUN cd /usr/local/bin && wget -q -O omg-transform \
     "$(curl -s https://api.github.com/repos/enaml-ops/omg-transform/releases/latest \
@@ -121,7 +121,6 @@ RUN cd $GOBIN && wget -q -O autopilot \
     "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
 RUN echo y | cf install-plugin $GOBIN/autopilot
 
-#RUN cf add-plugin-repo CF-Community http://plugins.cloudfoundry.org
 RUN cf install-plugin -f -r CF-Community "top"
 
 RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.5.1/credhub-linux-0.5.1.tgz && chmod 0755 credhub
@@ -129,6 +128,12 @@ RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incu
 RUN go get github.com/pivotal-cf/cliaas && \
     cd $GOPATH/src/github.com/pivotal-cf/cliaas && \
     glide install && go install github.com/pivotal-cf/cliaas/cmd/cliaas
+
+RUN cd /usr/local/bin && \
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+    chmod 0755 kubectl
+RUN cd /tmp && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.3.6/cf-mysql-plugin-linux-amd64 && \
+    chmod 0755 ./cf-mysql-plugin && cf install-plugin -f ./cf-mysql-plugin
 
 RUN chown -R ops: /opt $HOME
 RUN apt-get clean && apt-get -y autoremove
