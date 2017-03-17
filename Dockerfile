@@ -10,7 +10,7 @@ ENV GOBIN /opt/go/bin
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:/usr/local/go/bin:$GOBIN:$OMGBIN
 
 ADD update_enaml.sh /usr/local/bin
-ADD install_cf_plugins.sh /usr/local/bin
+ADD firstrun.sh /usr/local/bin
 
 RUN mkdir -p $HOME
 RUN mkdir -p $ENAML
@@ -30,7 +30,8 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
            file openstack tcpdump nmap less s3cmd s3curl \
            netcat npm nodejs-legacy python3-pip python3-setuptools \
-           apt-utils libdap-bin mysql-client
+           apt-utils libdap-bin mysql-client mongodb-clients postgresql-client-9.5 \
+           redis-tools
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
@@ -132,6 +133,8 @@ RUN cd /usr/local/bin && \
     chmod 0755 kubectl
 RUN cd $GOBIN && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.3.6/cf-mysql-plugin-linux-amd64 && \
     chmod 0755 ./cf-mysql-plugin 
+RUN cd $GOBIN && wget -q -O cf-service-connect https://github.com/18F/cf-service-connect/releases/download/v1.0.0/cf-service-connect_linux_amd64 && \
+    chmod 0755 ./cf-service-connect
 
 RUN chown -R ops: /opt $HOME
 RUN apt-get clean && apt-get -y autoremove

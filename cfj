@@ -21,7 +21,9 @@ enter_env(){
   else
     cd $HOME
     mkdir -p "$env" && touch $env/.touchfile
+    touch $env/.firstrun
     echo "export PS1=\"$env \$ \"" >> $env/.bashrc
+    echo "if [ -f .firstrun ]; then firstrun.sh && rm -f .firstrun ; fi" >> $env/.bashrc
     docker run --name="cfj-$env" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
   fi
 }

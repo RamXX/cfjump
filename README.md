@@ -3,9 +3,9 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 4.81GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
+**Warning:** This is a large, 4.91GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse.
 
-v0.19 includes:
+v0.20 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -36,6 +36,7 @@ v0.19 includes:
 - [autopilot](https://github.com/xchapter7x/autopilot) cf plugin for hands-off, zero downtime application deploys.
 - [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM.
 - [cloudfoundry-top-plugin](https://github.com/ECSTeam/cloudfoundry-top-plugin) cf interactive plugin for showing live statistics of the targeted Cloud Foundry foundation. By ECS team.
+- [cf-service-connect](https://github.com/18F/cf-service-connect) makes it easy to connect to your databases or other Cloud Foundry service instances from your local machine.
 
 ##### IaaS tools
 - [Terraform](https://www.terraform.io/) (0.7.4)
