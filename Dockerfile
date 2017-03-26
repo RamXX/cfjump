@@ -58,7 +58,7 @@ RUN wget $(wget -O- -q https://www.vaultproject.io/downloads.html | grep linux_a
 RUN chmod 755 /usr/local/bin/vault
 
 RUN cd /usr/local/bin/ && curl -o terraform.zip \
-    "https://releases.hashicorp.com/terraform/0.7.4/terraform_0.7.4_linux_amd64.zip" \
+    "https://releases.hashicorp.com/terraform/0.9.1/terraform_0.9.1_linux_amd64.zip" \
     && unzip terraform.zip && rm -f terraform.zip
 
 RUN gem install bosh_cli --no-ri --no-rdoc
@@ -77,6 +77,9 @@ RUN go get -u github.com/spf13/hugo
 
 RUN go get -d -u github.com/pivotalservices/magnet
 RUN cd $GOPATH/src/github.com/pivotalservices/magnet && glide install && cd cmd/magnet && go install
+
+RUN go get code.cloudfoundry.org/cfdot
+RUN cd $GOPATH/src/code.cloudfoundry.org/cfdot && GOOS=linux go build .
 
 RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.1-linux-amd64 && chmod 0755 bosh2
 
@@ -122,7 +125,7 @@ RUN update_enaml.sh
 RUN cd $GOBIN && wget -q -O autopilot \
     "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
 
-RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.5.1/credhub-linux-0.5.1.tgz && chmod 0755 credhub
+RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.6.0/credhub-linux-0.6.0.tgz && chmod 0755 credhub
 
 RUN go get github.com/pivotal-cf/cliaas && \
     cd $GOPATH/src/github.com/pivotal-cf/cliaas && \
