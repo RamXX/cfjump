@@ -139,6 +139,11 @@ RUN cd $GOBIN && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql
 RUN cd $GOBIN && wget -q -O cf-service-connect https://github.com/18F/cf-service-connect/releases/download/v1.0.0/cf-service-connect_linux_amd64 && \
     chmod 0755 ./cf-service-connect
 
+RUN mkdir -p $GOPATH/src/github.com/pivotalservices/goblob && \
+    git clone https://github.com/pivotal-cf/goblob.git $GOPATH/src/github.com/pivotalservices/goblob
+RUN cd $GOPATH/src/github.com/pivotalservices/goblob && glide install && \
+    GOARCH=amd64 GOOS=linux go install github.com/pivotalservices/goblob/cmd/goblob
+
 RUN chown -R ops: /opt $HOME
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*

@@ -3,9 +3,9 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 5.18 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated lighter.
+**Warning:** This is a large, 5.72 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated lighter.
 
-v0.21 includes:
+v0.22 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -26,6 +26,7 @@ v0.21 includes:
 - [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (0.6.0)(pre-release) a command line interface to interact with CredHub servers.
 - [`cf mysql` CLI plugin](https://github.com/andreasf/cf-mysql-plugin) (1.3.6) makes it easy to connect the mysql command line client to any MySQL-compatible database used by Cloud Foundry apps.
 - [`cfdot`](https://github.com/cloudfoundry/cfdot)  CF Diego Operator Toolkit, a CLI tool designed to interact with Diego components.
+- [`goblob`](https://github.com/pivotal-cf/goblob) a tool for migrating Cloud Foundry blobs from one blobstore to another. Presently it only supports migrating from an NFS blobstore to an S3-compatible one.
 
 ##### Pivotal-specific
 - [cfops](https://github.com/pivotalservices/cfops) (latest) automation based on the supported way to back up Pivotal Cloud Foundry
