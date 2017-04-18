@@ -1,11 +1,11 @@
 # cfjump
-Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different installation workflows, and includes several tools to work with Ops Manager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, GCP, Azure, VMware Photon Controller and OpenStack.
+Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different installation workflows, and includes several tools to work with Ops Manager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, GCP, Azure, VMware Photon Controller and OpenStack as well as a config generator for VMware NSX.
 
 It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 5.72 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated lighter.
+**Warning:** This is a large, 5.86 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated lighter.
 
-v0.22 includes:
+v0.23 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -15,7 +15,7 @@ v0.22 includes:
 ##### Cloud Foundry tools
 - `bosh-init` (latest)
 - [BOSH](http://bosh.io/) Ruby BOSH CLI (latest) called by the command name `bosh`.
-- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (latest) - New BOSH 2.0 Golang CLI. Binary called `bosh2` to avoid confusion with the Ruby CLI.
+- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (2.0.14) - New BOSH 2.0 Golang CLI. Binary called `bosh2` to avoid confusion with the Ruby CLI.
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
@@ -38,15 +38,18 @@ v0.22 includes:
 - [autopilot](https://github.com/xchapter7x/autopilot) cf plugin for hands-off, zero downtime application deploys.
 - [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM.
 - [cloudfoundry-top-plugin](https://github.com/ECSTeam/cloudfoundry-top-plugin) cf interactive plugin for showing live statistics of the targeted Cloud Foundry foundation. By ECS team.
-- [cf-service-connect](https://github.com/18F/cf-service-connect) makes it easy to connect to your databases or other Cloud Foundry service instances from your local machine.
+- [cf-service-connect](https://github.com/18F/cf-service-connect)(1.0) makes it easy to connect to your databases or other Cloud Foundry service instances from your local machine.
 
 ##### IaaS tools
-- [Terraform](https://www.terraform.io/) (0.9.1)
+- [Terraform](https://www.terraform.io/) (0.9.3)
 - OpenStack CLI (latest), both, legacy `nova`, `cinder`, `keystone`, etc commands as well as the newer `openstack` integrated CLI.
 - [Microsoft Azure CLI](https://github.com/Azure/azure-xplat-cli) (latest)
 - [Google Compute Cloud CLI](https://cloud.google.com/sdk/downloads#linux) (latest)
 - [AWS CLI](https://aws.amazon.com/cli/) (latest)
 - [Photon Controller](https://github.com/vmware/photon-controller) CLI (latest)
+
+##### Network virtualization
+- [`nsx-edge-gen`](https://github.com/cf-platform-eng/nsx-edge-gen)(latest) Generates NSX logical switches, Edge service gateways and LBs against the VMware NSX 6.3 API version.
 
 ##### Other useful tools
 - [Vault](https://www.vaultproject.io/) (latest)
@@ -63,6 +66,8 @@ v0.22 includes:
 
 ## Running
 First, make sure you can run instances as a regular unprivileged user. This container will create an internal user with uid and gid of 1000, same as the default in Ubuntu, which makes easier to share folders with the host.
+
+Step 1: `cp cfj /usr/local/bin`
 
 The included `cfj` script make the operation of virtual jumpboxes easy. Copy it to a directory in your $PATH and use it to interact with the virtual jumpboxes. The operation is:
 

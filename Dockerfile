@@ -31,12 +31,14 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            file openstack tcpdump nmap less s3cmd s3curl \
            netcat npm nodejs-legacy python3-pip python3-setuptools \
            apt-utils libdap-bin mysql-client mongodb-clients postgresql-client-9.5 \
-           redis-tools
+           redis-tools libpython2.7-dev libxml2-dev libxslt-dev libffi-dev
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 RUN add-apt-repository -y ppa:masterminds/glide
 RUN apt-get update && sudo apt-get -y --no-install-recommends install google-cloud-sdk glide
+
+RUN curl -O https://bootstrap.pypa.io/get-pip.py && python2.7 ./get-pip.py && rm -f python2.7 ./get-pip.py
 
 RUN pip3 install --upgrade pip
 
@@ -58,7 +60,7 @@ RUN wget $(wget -O- -q https://www.vaultproject.io/downloads.html | grep linux_a
 RUN chmod 755 /usr/local/bin/vault
 
 RUN cd /usr/local/bin/ && curl -o terraform.zip \
-    "https://releases.hashicorp.com/terraform/0.9.1/terraform_0.9.1_linux_amd64.zip" \
+    "https://releases.hashicorp.com/terraform/0.9.3/terraform_0.9.3_linux_amd64.zip" \
     && unzip terraform.zip && rm -f terraform.zip
 
 RUN gem install bosh_cli --no-ri --no-rdoc
@@ -81,7 +83,7 @@ RUN cd $GOPATH/src/github.com/pivotalservices/magnet && glide install && cd cmd/
 RUN go get code.cloudfoundry.org/cfdot
 RUN cd $GOPATH/src/code.cloudfoundry.org/cfdot && GOOS=linux go build .
 
-RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.1-linux-amd64 && chmod 0755 bosh2
+RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.14-linux-amd64 && chmod 0755 bosh2
 
 RUN cd /usr/local/bin && wget -q -O omg-transform \
     "$(curl -s https://api.github.com/repos/enaml-ops/omg-transform/releases/latest \
@@ -117,7 +119,7 @@ RUN go get github.com/pivotalservices/cf-mgmt
 RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis" > /usr/bin/genesis \
     && chmod 0755 /usr/bin/genesis
 
-# Thanks to Merlin Glynn for this part!
+# Thanks to Merlin Glynn for the Photon part!
 RUN baseURL=$(wget -q -O- https://github.com/vmware/photon-controller/releases/ | grep -m 1 photon-linux | perl -ne 'print map("$_\n", m/href=\".*?\"/g)' |  tr -d '"' | awk -F "href=" '{print$2}') && wget https://github.com$baseURL -O /usr/local/bin/photon
 RUN chmod 755 /usr/local/bin/photon
 RUN update_enaml.sh
@@ -143,6 +145,9 @@ RUN mkdir -p $GOPATH/src/github.com/pivotalservices/goblob && \
     git clone https://github.com/pivotal-cf/goblob.git $GOPATH/src/github.com/pivotalservices/goblob
 RUN cd $GOPATH/src/github.com/pivotalservices/goblob && glide install && \
     GOARCH=amd64 GOOS=linux go install github.com/pivotalservices/goblob/cmd/goblob
+
+RUN git clone https://github.com/cf-platform-eng/nsx-edge-gen.git && \
+    pip2 install -r nsx-edge-gen/requirements.txt && pip2 install tabulate pynsxv && mv nsx-edge-gen /opt
 
 RUN chown -R ops: /opt $HOME
 RUN apt-get clean && apt-get -y autoremove
