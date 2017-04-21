@@ -10,7 +10,6 @@ ENV GOBIN /opt/go/bin
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:/usr/local/go/bin:$GOBIN:$OMGBIN
 
 ADD update_enaml.sh /usr/local/bin
-ADD firstrun.sh /usr/local/bin
 
 RUN mkdir -p $HOME
 RUN mkdir -p $ENAML
@@ -150,6 +149,7 @@ RUN cd $GOPATH/src/github.com/pivotalservices/goblob && glide install && \
 RUN git clone https://github.com/cf-platform-eng/nsx-edge-gen.git && \
     pip2 install -r nsx-edge-gen/requirements.txt && pip2 install tabulate pynsxv && mv nsx-edge-gen /opt
 
+ADD firstrun.sh /usr/local/bin
 RUN chown -R ops:ops /opt $HOME
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
