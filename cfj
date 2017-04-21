@@ -23,8 +23,11 @@ enter_env(){
     mkdir -p "$env" && touch $env/.touchfile
     touch $env/.firstrun
     echo "export PS1=\"$env \$ \"" >> $env/.bashrc
-    echo "if [ -f .firstrun ]; then firstrun.sh && rm -f .firstrun ; fi" >> $env/.bashrc
-    docker run --name="cfj-$env" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
+    echo "if [ -f .firstrun ]; then firstrun.sh $(id -u) $(id -g) && rm -f .firstrun ; fi" >> $env/.bashrc
+    echo "cfj needs to change the permissions of the $env directory being mounted in the container. This requires root permissions."
+    echo "If prompted, please enter your sudo password"
+    sudo chown -R 9024:9024 "$env"
+    docker run --name="cfj-$env" -u "9024:9024" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
   fi
 }
 

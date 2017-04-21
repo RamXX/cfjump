@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:16.04
 MAINTAINER Ramiro Salas <rsalas@pivotal.io>
 
 ENV HOME /home/ops
@@ -15,9 +15,10 @@ ADD firstrun.sh /usr/local/bin
 RUN mkdir -p $HOME
 RUN mkdir -p $ENAML
 RUN mkdir -p $OMG_PLUGIN_DIR
-RUN useradd -M -d $HOME ops
+RUN groupadd -g 9024 ops
+RUN useradd --shell /bin/bash -u 9024 -g 9024 -o -c "" -M -d $HOME ops
 VOLUME $HOME
-RUN chown -R ops: $HOME
+RUN chown -R ops:ops $HOME
 WORKDIR $HOME
 RUN mkdir -p $HOME/bin
 RUN cp -n /etc/skel/.[a-z]* .
@@ -149,7 +150,7 @@ RUN cd $GOPATH/src/github.com/pivotalservices/goblob && glide install && \
 RUN git clone https://github.com/cf-platform-eng/nsx-edge-gen.git && \
     pip2 install -r nsx-edge-gen/requirements.txt && pip2 install tabulate pynsxv && mv nsx-edge-gen /opt
 
-RUN chown -R ops: /opt $HOME
+RUN chown -R ops:ops /opt $HOME
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
 #RUN rm -rf $GOPATH/src $GOPATH/pkg /usr/local/go/pkg /usr/local/go/src

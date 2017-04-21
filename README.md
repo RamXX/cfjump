@@ -1,11 +1,11 @@
 # cfjump
 Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different installation workflows, and includes several tools to work with Ops Manager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, GCP, Azure, VMware Photon Controller and OpenStack as well as a config generator for VMware NSX.
 
-It has been tested only on an Ubuntu Server 16.04 (Xenial) 64-bit Docker host VM. Your mileage on other systems may vary.
+It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit and a Photon OS Docker host VM. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 5.86 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated lighter.
+**Warning:** This is a large, 5.89 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.23 includes:
+v0.24 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -62,12 +62,10 @@ v0.23 includes:
 - [kubectl](https://kubernetes.io/docs/user-guide/prereqs/) Kubernetes CLI. Useful for [Kubo](https://pivotal.io/kubo).
 
 
-
-
 ## Running
-First, make sure you can run instances as a regular unprivileged user. This container will create an internal user with uid and gid of 1000, same as the default in Ubuntu, which makes easier to share folders with the host.
+Cfjump runs instances as a regular unprivileged user. This container will create an internal user with uid and gid of 9024, so you will need to provide your `sudo` password to create a directory with this uid that can be mounted in the container.
 
-Step 1: `cp cfj /usr/local/bin`
+Step 1: `sudo cp cfj /usr/local/bin`
 
 The included `cfj` script make the operation of virtual jumpboxes easy. Copy it to a directory in your $PATH and use it to interact with the virtual jumpboxes. The operation is:
 
@@ -88,6 +86,7 @@ You can just get this image from Docker Hub by running:
 docker pull ramxx/cfjump:latest
 ```
 
+
 Or if you prefer to build it yourself:
 
 ```
@@ -95,6 +94,8 @@ git clone https://github.com/RamXX/cfjump
 cd cfjump
 docker build -t ramxx/cfjump:latest .
 ```
+
+Note that you still need the `cfj` script from this repo. You can either `git clone` the repo or download the script directly.
 
 ## Limitations
 Every instance of a container can only be used by a single user at the time. If another user attempts to join the same container while being used, all screen I/O will be duplicated in each screen.
