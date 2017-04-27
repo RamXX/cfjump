@@ -63,6 +63,9 @@ v0.24 includes:
 
 
 ## Running
+
+**STOP:** Cfjump is not meant to be ran directly with `docker run`, but rather to be used with the `cfj` companion CLI. You **must** follow the steps below, otherwise you will see all sorts of permissions problems.
+
 Cfjump runs instances as a regular unprivileged user. This container will create an internal user with uid and gid of 9024, so you will need to provide your `sudo` password to create a directory with this uid that can be mounted in the container.
 
 Step 1: `sudo cp cfj /usr/local/bin`
