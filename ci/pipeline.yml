@@ -21,6 +21,24 @@ jobs:
           build: cfjump/
 
 resources:
+# Output artifact first
+  - name: cfjump-artifact
+    type: docker-image
+    source:
+      repository: ramxx/cfjump
+      username: {{docker-hub-username}}
+      password: {{docker-hub-password}}
+
+# This repo itself
+  - name: cfjump-gitrepo
+    type: git
+    source: https://github.com/RamXX/cfjump.git
+    branch: master
+
+# And now all external components I'd like to consider dependencies
+# and trigger a build upon updates (not all!). They are in the order found
+# in the Dockerfile.
+
   - name: omg-cli
     type: github-release
     check_every: 4h
