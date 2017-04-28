@@ -27,6 +27,9 @@ enter_env(){
     echo "cfj needs to change the permissions of the $env directory being mounted in the container. This requires root permissions."
     echo "If prompted, please enter your sudo password"
     sudo chown -R 9024:9024 "$env"
+    if [ "$(uname)" == "Darwin" ]; then
+       sudo chmod -R 777 "$env"
+    fi
     docker run --name="cfj-$env" -u "9024:9024" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
   fi
 }
