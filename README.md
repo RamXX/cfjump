@@ -1,7 +1,7 @@
 # cfjump
 Jumpbox Docker image with all required tools to install and operate Cloud Foundry from the command line. It works with different installation workflows, and includes several tools to work with Ops Manager and other Pivotal-specific components. It also includes some IaaS-specific CLI tools for AWS, GCP, Azure, VMware Photon Controller and OpenStack as well as a config generator for VMware NSX.
 
-It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit and a Photon OS Docker host VM. Your mileage on other systems may vary.
+It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host VM, and Docker for Mac. Your mileage on other systems may vary.
 
 **Warning:** This is a large, 5.89 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
