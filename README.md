@@ -5,7 +5,7 @@ It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host
 
 **Warning:** This is a large, 5.89 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.24 includes:
+v0.25 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -15,7 +15,7 @@ v0.24 includes:
 ##### Cloud Foundry tools
 - `bosh-init` (latest)
 - [BOSH](http://bosh.io/) Ruby BOSH CLI (latest) called by the command name `bosh`.
-- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (2.0.14) - New BOSH 2.0 Golang CLI. Binary called `bosh2` to avoid confusion with the Ruby CLI.
+- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (2.0.16) - New BOSH 2.0 Golang CLI. GA release. Binary called `bosh2` to avoid confusion with the Ruby CLI.
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
@@ -36,12 +36,12 @@ v0.24 includes:
 - [om](https://github.com/pivotal-cf/om) Small sharp tool for deploying products to ops-manager.
 - [magnet](https://github.com/pivotalservices/magnet) Better AZ distribution for vSphere.
 - [autopilot](https://github.com/xchapter7x/autopilot) cf plugin for hands-off, zero downtime application deploys.
-- [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM.
+- [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM. **Temporarily removed due to build issue**
 - [cloudfoundry-top-plugin](https://github.com/ECSTeam/cloudfoundry-top-plugin) cf interactive plugin for showing live statistics of the targeted Cloud Foundry foundation. By ECS team.
 - [cf-service-connect](https://github.com/18F/cf-service-connect)(1.0) makes it easy to connect to your databases or other Cloud Foundry service instances from your local machine.
 
 ##### IaaS tools
-- [Terraform](https://www.terraform.io/) (0.9.3)
+- [Terraform](https://www.terraform.io/) (0.9.4)
 - OpenStack CLI (latest), both, legacy `nova`, `cinder`, `keystone`, etc commands as well as the newer `openstack` integrated CLI.
 - [Microsoft Azure CLI](https://github.com/Azure/azure-xplat-cli) (latest)
 - [Google Compute Cloud CLI](https://cloud.google.com/sdk/downloads#linux) (latest)
