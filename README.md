@@ -3,9 +3,9 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host VM, and Docker for Mac. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 5.89 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
+**Warning:** This is a large, 3.5 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.25 includes:
+v0.26 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -36,7 +36,7 @@ v0.25 includes:
 - [om](https://github.com/pivotal-cf/om) Small sharp tool for deploying products to ops-manager.
 - [magnet](https://github.com/pivotalservices/magnet) Better AZ distribution for vSphere.
 - [autopilot](https://github.com/xchapter7x/autopilot) cf plugin for hands-off, zero downtime application deploys.
-- [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM. **Temporarily removed due to build issue**
+- [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM.
 - [cloudfoundry-top-plugin](https://github.com/ECSTeam/cloudfoundry-top-plugin) cf interactive plugin for showing live statistics of the targeted Cloud Foundry foundation. By ECS team.
 - [cf-service-connect](https://github.com/18F/cf-service-connect)(1.0) makes it easy to connect to your databases or other Cloud Foundry service instances from your local machine.
 
@@ -68,8 +68,12 @@ v0.25 includes:
 
 Cfjump runs instances as a regular unprivileged user. This container will create an internal user with uid and gid of 9024, so you will need to provide your `sudo` password to create a directory with this uid that can be mounted in the container.
 
-Step 1: `sudo cp cfj /usr/local/bin`
-
+Step 1: 
+```
+wget https://raw.githubusercontent.com/RamXX/cfjump/master/cfj
+chmod +x cfj
+sudo mv cfj /usr/local/bin
+```
 The included `cfj` script make the operation of virtual jumpboxes easy. Copy it to a directory in your $PATH and use it to interact with the virtual jumpboxes. The operation is:
 
 - `cfj list` (or simply `cfj` with no arguments) to list the running containers.

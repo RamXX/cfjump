@@ -67,21 +67,27 @@ RUN gem install bosh_cli --no-ri --no-rdoc
 
 RUN gem install cf-uaac --no-rdoc --no-ri
 
-RUN go get -u github.com/pivotal-cf/om
+RUN cd /usr/local/bin && wget -q -O om \
+    "$(curl -s https://api.github.com/repos/pivotal-cf/om/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x om 
+
+RUN cd /usr/local/bin && wget -q -O fly \
+    "$(curl -s https://api.github.com/repos/concourse/fly/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x fly
 
 RUN go get -u github.com/square/certstrap
-
-RUN go get -u github.com/concourse/fly
-
 RUN go get -u github.com/compozed/deployadactyl
+RUN go get code.cloudfoundry.org/cfdot && \
+    cd $GOPATH/src/code.cloudfoundry.org/cfdot && GOOS=linux go build .
 
-RUN go get -u github.com/spf13/hugo
 
-RUN go get -d -u github.com/pivotalservices/magnet
-RUN cd $GOPATH/src/github.com/pivotalservices/magnet && glide install && cd cmd/magnet && go install
+RUN cd /tmp && wget -q -O hugo.deb \
+    "$(curl -s https://api.github.com/repos/spf13/hugo/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep Linux-64bit.deb)" && dpkg -i hugo.deb
 
-RUN go get code.cloudfoundry.org/cfdot
-RUN cd $GOPATH/src/code.cloudfoundry.org/cfdot && GOOS=linux go build .
+RUN cd /usr/local/bin && wget -q -O magnet \
+    "$(curl -s https://api.github.com/repos/pivotalservices/magnet/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x magnet
 
 RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.16-linux-amd64 && chmod 0755 bosh2
 
@@ -108,13 +114,17 @@ RUN cd /usr/local/bin && wget -q -O spruce \
     "$(curl -s https://api.github.com/repos/geofffranks/spruce/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x spruce
 
-RUN go get -u github.com/starkandwayne/safe
+RUN cd /usr/local/bin && wget -q -O safe \
+    "$(curl -s https://api.github.com/repos/starkandwayne/safe/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x safe
 
 RUN cd /usr/local/bin && wget -q -O asg-creator \
     "$(curl -s https://api.github.com/repos/cloudfoundry-incubator/asg-creator/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x asg-creator
 
-RUN go get github.com/pivotalservices/cf-mgmt
+RUN cd /usr/local/bin && wget -q -O cf-mgmt \
+    "$(curl -s https://api.github.com/repos/pivotalservices/cf-mgmt/releases/latest \
+    |jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" && chmod +x cf-mgmt
 
 RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/genesis" > /usr/bin/genesis \
     && chmod 0755 /usr/bin/genesis
@@ -127,11 +137,10 @@ RUN update_enaml.sh
 RUN cd $GOBIN && wget -q -O autopilot \
     "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
 
-RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.6.0/credhub-linux-0.6.0.tgz && chmod 0755 credhub
+RUN cd $GOBIN && wget -q -O cliaas \
+    "$(curl -s https://api.github.com/repos/pivotal-cf/cliaas/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cliaas
 
-# RUN go get github.com/pivotal-cf/cliaas && \
-#     cd $GOPATH/src/github.com/pivotal-cf/cliaas && \
-#     glide install && go install github.com/pivotal-cf/cliaas/cmd/cliaas
+RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.6.0/credhub-linux-0.6.0.tgz && chmod 0755 credhub
 
 RUN cd /usr/local/bin && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
@@ -141,10 +150,8 @@ RUN cd $GOBIN && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql
 RUN cd $GOBIN && wget -q -O cf-service-connect https://github.com/18F/cf-service-connect/releases/download/v1.0.0/cf-service-connect_linux_amd64 && \
     chmod 0755 ./cf-service-connect
 
-RUN mkdir -p $GOPATH/src/github.com/pivotalservices/goblob && \
-    git clone https://github.com/pivotal-cf/goblob.git $GOPATH/src/github.com/pivotalservices/goblob
-RUN cd $GOPATH/src/github.com/pivotalservices/goblob && glide install && \
-    GOARCH=amd64 GOOS=linux go install github.com/pivotalservices/goblob/cmd/goblob
+RUN cd $GOBIN && wget -q -O goblob \
+    "$(curl -s https://api.github.com/repos/pivotal-cf/goblob/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x goblob
 
 RUN git clone https://github.com/cf-platform-eng/nsx-edge-gen.git && \
     pip2 install -r nsx-edge-gen/requirements.txt && pip2 install tabulate pynsxv && mv nsx-edge-gen /opt
