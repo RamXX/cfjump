@@ -5,6 +5,7 @@ ENV HOME /home/ops
 ENV ENAML /opt/enaml
 ENV OMG_PLUGIN_DIR $ENAML/plugins
 ENV OMGBIN $ENAML/bin
+ENV CFPLUGINS /opt/cf-plugins
 ENV GOPATH /opt/go
 ENV GOBIN /opt/go/bin
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/bin:/usr/local/go/bin:$GOBIN:$OMGBIN
@@ -13,6 +14,8 @@ ADD update_enaml.sh /usr/local/bin
 
 RUN mkdir -p $HOME
 RUN mkdir -p $ENAML
+RUN mkdir -p $GOBIN
+RUN mkdir -p $CFPLUGINS
 RUN mkdir -p $OMG_PLUGIN_DIR
 RUN groupadd -g 9024 ops
 RUN useradd --shell /bin/bash -u 9024 -g 9024 -o -c "" -M -d $HOME ops
@@ -35,8 +38,7 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-RUN add-apt-repository -y ppa:masterminds/glide
-RUN apt-get update && sudo apt-get -y --no-install-recommends install google-cloud-sdk glide
+RUN apt-get update && sudo apt-get -y --no-install-recommends install google-cloud-sdk
 
 RUN curl -O https://bootstrap.pypa.io/get-pip.py && python2.7 ./get-pip.py && rm -f python2.7 ./get-pip.py
 
@@ -45,9 +47,6 @@ RUN pip3 install --upgrade pip
 RUN pip3 install awscli
 
 RUN npm install -g azure-cli
-
-RUN wget -q -O - "https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz" \
-    | tar -C /usr/local -zx
 
 RUN curl -L \
     "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" \
@@ -63,8 +62,6 @@ RUN cd /usr/local/bin/ && curl -o terraform.zip \
     "https://releases.hashicorp.com/terraform/0.9.4/terraform_0.9.4_linux_amd64.zip" \
     && unzip terraform.zip && rm -f terraform.zip
 
-RUN gem install bosh_cli --no-ri --no-rdoc
-
 RUN gem install cf-uaac --no-rdoc --no-ri
 
 RUN cd /usr/local/bin && wget -q -O om \
@@ -75,12 +72,6 @@ RUN cd /usr/local/bin && wget -q -O fly \
     "$(curl -s https://api.github.com/repos/concourse/fly/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x fly
 
-RUN go get -u github.com/square/certstrap
-RUN go get -u github.com/compozed/deployadactyl
-RUN go get code.cloudfoundry.org/cfdot && \
-    cd $GOPATH/src/code.cloudfoundry.org/cfdot && GOOS=linux go build .
-
-
 RUN cd /tmp && wget -q -O hugo.deb \
     "$(curl -s https://api.github.com/repos/spf13/hugo/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep Linux-64bit.deb)" && dpkg -i hugo.deb
@@ -89,7 +80,7 @@ RUN cd /usr/local/bin && wget -q -O magnet \
     "$(curl -s https://api.github.com/repos/pivotalservices/magnet/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x magnet
 
-RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.16-linux-amd64 && chmod 0755 bosh2
+RUN cd /usr/local/bin && wget -q -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.16-linux-amd64 && chmod 0755 bosh
 
 RUN cd /usr/local/bin && wget -q -O omg-transform \
     "$(curl -s https://api.github.com/repos/enaml-ops/omg-transform/releases/latest \
@@ -132,12 +123,8 @@ RUN curl "https://raw.githubusercontent.com/starkandwayne/genesis/master/bin/gen
 # Thanks to Merlin Glynn for the Photon part!
 RUN baseURL=$(wget -q -O- https://github.com/vmware/photon-controller/releases/ | grep -m 1 photon-linux | perl -ne 'print map("$_\n", m/href=\".*?\"/g)' |  tr -d '"' | awk -F "href=" '{print$2}') && wget https://github.com$baseURL -O /usr/local/bin/photon
 RUN chmod 755 /usr/local/bin/photon
-RUN update_enaml.sh
 
-RUN cd $GOBIN && wget -q -O autopilot \
-    "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
-
-RUN cd $GOBIN && wget -q -O cliaas \
+RUN cd /usr/local/bin && wget -q -O cliaas \
     "$(curl -s https://api.github.com/repos/pivotal-cf/cliaas/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cliaas
 
 RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.6.0/credhub-linux-0.6.0.tgz && chmod 0755 credhub
@@ -145,22 +132,27 @@ RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incu
 RUN cd /usr/local/bin && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
     chmod 0755 kubectl
-RUN cd $GOBIN && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.3.6/cf-mysql-plugin-linux-amd64 && \
+
+RUN cd $CFPLUGINS && wget -q -O autopilot \
+    "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
+
+RUN cd $CFPLUGINS && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.3.6/cf-mysql-plugin-linux-amd64 && \
     chmod 0755 ./cf-mysql-plugin 
-RUN cd $GOBIN && wget -q -O cf-service-connect https://github.com/18F/cf-service-connect/releases/download/v1.0.0/cf-service-connect_linux_amd64 && \
+RUN cd $CFPLUGINS && wget -q -O cf-service-connect https://github.com/18F/cf-service-connect/releases/download/v1.0.0/cf-service-connect_linux_amd64 && \
     chmod 0755 ./cf-service-connect
 
-RUN cd $GOBIN && wget -q -O goblob \
+RUN cd /usr/local/bin && wget -q -O goblob \
     "$(curl -s https://api.github.com/repos/pivotal-cf/goblob/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x goblob
 
 RUN git clone https://github.com/cf-platform-eng/nsx-edge-gen.git && \
     pip2 install -r nsx-edge-gen/requirements.txt && pip2 install tabulate pynsxv && mv nsx-edge-gen /opt
 
 ADD firstrun.sh /usr/local/bin
-RUN chown -R ops:ops /opt $HOME
+ADD add_go.sh /usr/local/bin
+ADD add_extras.sh /usr/local/bin
+RUN chown -R ops:ops /opt $HOME $GOBIN $GOPATH
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
-#RUN rm -rf $GOPATH/src $GOPATH/pkg /usr/local/go/pkg /usr/local/go/src
 
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 

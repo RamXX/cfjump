@@ -3,29 +3,25 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host VM, and Docker for Mac. Your mileage on other systems may vary.
 
-**Warning:** This is a large, 3.5 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
+**Warning:** This is a 2.26 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.26 includes:
+v0.27 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
-- Golang (1.7.1)
 
 ##### Cloud Foundry tools
 - `bosh-init` (latest)
-- [BOSH](http://bosh.io/) Ruby BOSH CLI (latest) called by the command name `bosh`.
-- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (2.0.16) - New BOSH 2.0 Golang CLI. GA release. Binary called `bosh2` to avoid confusion with the Ruby CLI.
+- [`bosh`](https://github.com/cloudfoundry/bosh-cli) (2.0.16) - New BOSH 2.0 Golang CLI. GA release. 
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
 - [Enaml](https://github.com/enaml-ops/omg-cli) (latest). Deploy Cloud Foundry without YAML.
 - [omg-transform](https://github.com/enaml-ops/omg-transform) (latest). An enaml based tool that allows you to perform transformations on bosh manifests.
-- [Deployadactyl](https://github.com/compozed/deployadactyl) (latest). Go library for deploying applications to multiple Cloud Foundry instances.
 - [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (0.6.0)(pre-release) a command line interface to interact with CredHub servers.
 - [`cf mysql` CLI plugin](https://github.com/andreasf/cf-mysql-plugin) (1.3.6) makes it easy to connect the mysql command line client to any MySQL-compatible database used by Cloud Foundry apps.
-- [`cfdot`](https://github.com/cloudfoundry/cfdot)  CF Diego Operator Toolkit, a CLI tool designed to interact with Diego components.
 - [`goblob`](https://github.com/pivotal-cf/goblob) a tool for migrating Cloud Foundry blobs from one blobstore to another. Presently it only supports migrating from an NFS blobstore to an S3-compatible one.
 
 ##### Pivotal-specific
@@ -54,13 +50,20 @@ v0.26 includes:
 ##### Other useful tools
 - [Vault](https://www.vaultproject.io/) (latest)
 - `safe` CLI, [an alternative Vault CLI](https://github.com/starkandwayne/safe) (latest)
-- [certstrap](https://github.com/square/certstrap) (latest)
 - [Spiff](https://github.com/cloudfoundry-incubator/spiff) (1.0.8)
 - [Spruce](http://spruce.cf/) (latest)
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
 - [Hugo](http://gohugo.io/) (latest) Static site generator written in Go. Ideal for documentation projects.
 - [kubectl](https://kubernetes.io/docs/user-guide/prereqs/) Kubernetes CLI. Useful for [Kubo](https://pivotal.io/kubo).
 
+##### Extras
+
+If you need this extra apps, you must first install the Golang environment with the `add_go.sh` command and then run `add_extras.sh`. This is because these tools 
+publish only source code and not binaries, and the decoupling was necessary to reduce the size of the Docker image.
+
+- [`cfdot`](https://github.com/cloudfoundry/cfdot)  CF Diego Operator Toolkit, a CLI tool designed to interact with Diego components.
+- [certstrap](https://github.com/square/certstrap) (latest)
+- [Deployadactyl](https://github.com/compozed/deployadactyl) (latest). Go library for deploying applications to multiple Cloud Foundry instances.
 
 ## Running
 
@@ -85,6 +88,11 @@ You can use different jumpbox instances for different sessions, users, environme
 
 ## `cf` CLI plugins
 Plugins are installed automatically upon the creation of the virtual jumpbox with the `cfj` command, so the first run will take a few seconds longer than future runs.
+
+## No-go
+The Golang environment was installed by default in previous versions to make easier to add new Golang tools, but this increased the size of the image substantially.
+For this reason, Go is now decoupled from the image itself. It can be installed with the simple command `add_go.sh` in `/usr/local/bin`. By default, it will install
+version 1.8.1, but it can be easily adjusted to other versions as needed. See also the note under "Extras" above.
 
 ## Building
 You can just get this image from Docker Hub by running:
@@ -112,7 +120,7 @@ It may be possible to use an `sshd` daemon to support multiple sessions, but tha
 Additionally, `man` pages are not installed in this image to decrease its size. Typically, man pages can be accessed on the Docker host itself or easily found online.
 
 # Note for Enaml
-For Enaml, since it's in very active development, you may want to use the `update_enaml.sh` script to dynamically update and register the latest versions on demand. Of course, this will only download Enaml for the current instance of the container. The latest image at the time of the build was included.
+For Enaml, since it's in very active development, you may want to use the `update_enaml.sh` script to dynamically update and register the latest versions on demand. Of course, this will only download Enaml for the current instance of the container. In order to use Enaml, **you must run** the updater at least once. No default binaries are included.
 
 The $ENAML variable is the location where the Enaml packages will be downloaded to, and it's mandatory. In the container, it is set to `/opt/enaml` by default.
 
