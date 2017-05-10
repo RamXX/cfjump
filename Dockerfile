@@ -153,6 +153,7 @@ ADD add_extras.sh /usr/local/bin
 RUN chown -R ops:ops /opt $HOME $GOBIN $GOPATH
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
+RUN ln -s /usr/local/bin/bosh /usr/local/bin/bosh2
 
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 
