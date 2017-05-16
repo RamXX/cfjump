@@ -62,6 +62,8 @@ RUN cd /usr/local/bin/ && curl -o terraform.zip \
     "https://releases.hashicorp.com/terraform/0.9.4/terraform_0.9.4_linux_amd64.zip" \
     && unzip terraform.zip && rm -f terraform.zip
 
+RUN gem install bosh_cli --no-ri --no-rdoc
+
 RUN gem install cf-uaac --no-rdoc --no-ri
 
 RUN cd /usr/local/bin && wget -q -O om \
@@ -80,7 +82,7 @@ RUN cd /usr/local/bin && wget -q -O magnet \
     "$(curl -s https://api.github.com/repos/pivotalservices/magnet/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x magnet
 
-RUN cd /usr/local/bin && wget -q -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.16-linux-amd64 && chmod 0755 bosh
+RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.16-linux-amd64 && chmod 0755 bosh2
 
 RUN cd /usr/local/bin && wget -q -O omg-transform \
     "$(curl -s https://api.github.com/repos/enaml-ops/omg-transform/releases/latest \
@@ -153,7 +155,6 @@ ADD add_extras.sh /usr/local/bin
 RUN chown -R ops:ops /opt $HOME $GOBIN $GOPATH
 RUN apt-get clean && apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
-RUN ln -s /usr/local/bin/bosh /usr/local/bin/bosh2
 
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
 
