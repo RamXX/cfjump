@@ -29,7 +29,7 @@ RUN cat /etc/apt/sources.list | sed 's/archive/us.archive/g' > /tmp/s && mv /tmp
 
 RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
-           build-essential git ssh software-properties-common dnsutils \
+           build-essential git ssh zip software-properties-common dnsutils \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
            file openstack tcpdump nmap less s3cmd s3curl \
            netcat npm nodejs-legacy python3-pip python3-setuptools \
