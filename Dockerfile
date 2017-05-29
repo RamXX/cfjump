@@ -129,7 +129,7 @@ RUN chmod 755 /usr/local/bin/photon
 RUN cd /usr/local/bin && wget -q -O cliaas \
     "$(curl -s https://api.github.com/repos/pivotal-cf/cliaas/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cliaas
 
-RUN cd /usr/local/bin && wget -q -O credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.6.0/credhub-linux-0.6.0.tgz && chmod 0755 credhub
+RUN cd /usr/local/bin && wget -q -O - https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.8.0/credhub-linux-0.8.0.tgz | tar xzf - > credhub && chmod 0755 credhub
 
 RUN cd /usr/local/bin && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \

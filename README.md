@@ -5,7 +5,7 @@ It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host
 
 **Warning:** This is a 2.26 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.28 includes:
+v0.29 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -21,7 +21,7 @@ v0.28 includes:
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
 - [Enaml](https://github.com/enaml-ops/omg-cli) (latest). Deploy Cloud Foundry without YAML.
 - [omg-transform](https://github.com/enaml-ops/omg-transform) (latest). An enaml based tool that allows you to perform transformations on bosh manifests.
-- [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (0.6.0)(pre-release) a command line interface to interact with CredHub servers.
+- [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (0.8.0)(pre-release) a command line interface to interact with CredHub servers.
 - [`cf mysql` CLI plugin](https://github.com/andreasf/cf-mysql-plugin) (1.3.6) makes it easy to connect the mysql command line client to any MySQL-compatible database used by Cloud Foundry apps.
 - [`goblob`](https://github.com/pivotal-cf/goblob) a tool for migrating Cloud Foundry blobs from one blobstore to another. Presently it only supports migrating from an NFS blobstore to an S3-compatible one.
 
@@ -36,6 +36,7 @@ v0.28 includes:
 - [cliaas](https://github.com/pivotal-cf/cliaas) wraps multiple IaaS-specific libraries to perform some IaaS-agnostic functions. Presently it only supports upgrading a Pivotal Cloud Foundry Operations Manager VM.
 - [cloudfoundry-top-plugin](https://github.com/ECSTeam/cloudfoundry-top-plugin) cf interactive plugin for showing live statistics of the targeted Cloud Foundry foundation. By ECS team.
 - [cf-service-connect](https://github.com/18F/cf-service-connect)(1.0) makes it easy to connect to your databases or other Cloud Foundry service instances from your local machine.
+- [tile-generator](http://docs.pivotal.io/tiledev/tile-generator.html) Tool that helps tile authors develop, package, test, and deploy services and other add-ons to Pivotal Cloud Foundry (PCF).
 
 ##### IaaS tools
 - [Terraform](https://www.terraform.io/) (0.9.4)
