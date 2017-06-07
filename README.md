@@ -5,7 +5,7 @@ It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host
 
 **Warning:** This is a 2.26 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.29 includes:
+v0.30 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -13,7 +13,7 @@ v0.29 includes:
 
 ##### Cloud Foundry tools
 - `bosh-init` (latest)
-- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (2.0.16) - New BOSH 2.0 Golang CLI. GA release. The binary is called `bosh2` to avoid confusion with `bosh` (below) which is the Ruby client.
+- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (2.0.23) - New BOSH 2.0 Golang CLI. GA release. The binary is called `bosh2` to avoid confusion with `bosh` (below) which is the Ruby client.
 - [`bosh`](https://github.com/cloudfoundry/bosh-cli) (latest) - Legacy Ruby BOSH CLI.
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
