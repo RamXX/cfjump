@@ -78,8 +78,9 @@ Step 1:
 wget https://raw.githubusercontent.com/RamXX/cfjump/master/cfj
 chmod +x cfj
 sudo mv cfj /usr/local/bin
+docker pull ramxx/cfjump
 ```
-The included `cfj` script make the operation of virtual jumpboxes easy. Copy it to a directory in your $PATH and use it to interact with the virtual jumpboxes. The operation is:
+The usage of the `cfj` CLI is as follows:
 
 - `cfj list` (or simply `cfj` with no arguments) to list the running containers.
 - `cfj <name>` to either create or enter a container.
