@@ -3,25 +3,23 @@ Jumpbox Docker image with all required tools to install and operate Cloud Foundr
 
 It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host VM, and Docker for Mac. Your mileage on other systems may vary.
 
-**Warning:** This is a 2.26 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
+**Warning:** This is a 2.23 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.30 includes:
+v0.31 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
 - Several Linux troubleshooting tools, from `dig` and `iPerf`, to `nmap` and `tcpdump`.
 
 ##### Cloud Foundry tools
-- `bosh-init` (latest)
-- [`bosh2`](https://github.com/cloudfoundry/bosh-cli) (2.0.23) - New BOSH 2.0 Golang CLI. GA release. The binary is called `bosh2` to avoid confusion with `bosh` (below) which is the Ruby client.
-- [`bosh`](https://github.com/cloudfoundry/bosh-cli) (latest) - Legacy Ruby BOSH CLI.
+- [`bosh`](https://github.com/cloudfoundry/bosh-cli) (2.0.23) - BOSH 2.0 Golang CLI. GA release. The binary is also linked to `bosh2` for pre-existing scripts. The Ruby BOSH CLI has been deprecated and it's no longer included here.
 - [uaac](https://docs.cloudfoundry.org/adminguide/uaa-user-management.html) CLI (latest)
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
 - [Enaml](https://github.com/enaml-ops/omg-cli) (latest). Deploy Cloud Foundry without YAML.
 - [omg-transform](https://github.com/enaml-ops/omg-transform) (latest). An enaml based tool that allows you to perform transformations on bosh manifests.
-- [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (0.8.0)(pre-release) a command line interface to interact with CredHub servers.
+- [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (1.0.0) a command line interface to interact with CredHub servers.
 - [`cf mysql` CLI plugin](https://github.com/andreasf/cf-mysql-plugin) (1.3.6) makes it easy to connect the mysql command line client to any MySQL-compatible database used by Cloud Foundry apps.
 - [`goblob`](https://github.com/pivotal-cf/goblob) a tool for migrating Cloud Foundry blobs from one blobstore to another. Presently it only supports migrating from an NFS blobstore to an S3-compatible one.
 
@@ -39,7 +37,7 @@ v0.30 includes:
 - [tile-generator](http://docs.pivotal.io/tiledev/tile-generator.html) Tool that helps tile authors develop, package, test, and deploy services and other add-ons to Pivotal Cloud Foundry (PCF).
 
 ##### IaaS tools
-- [Terraform](https://www.terraform.io/) (0.9.4)
+- [Terraform](https://www.terraform.io/) (0.9.8)
 - OpenStack CLI (latest), both, legacy `nova`, `cinder`, `keystone`, etc commands as well as the newer `openstack` integrated CLI.
 - [Microsoft Azure CLI](https://github.com/Azure/azure-xplat-cli) (latest)
 - [Google Compute Cloud CLI](https://cloud.google.com/sdk/downloads#linux) (latest)
@@ -55,7 +53,6 @@ v0.30 includes:
 - [Spiff](https://github.com/cloudfoundry-incubator/spiff) (1.0.8)
 - [Spruce](http://spruce.cf/) (latest)
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
-- [Hugo](http://gohugo.io/) (latest) Static site generator written in Go. Ideal for documentation projects.
 - [kubectl](https://kubernetes.io/docs/user-guide/prereqs/) Kubernetes CLI. Useful for [Kubo](https://pivotal.io/kubo).
 
 ##### Extras

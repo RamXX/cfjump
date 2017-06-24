@@ -31,7 +31,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install wget curl
 RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            build-essential git ssh zip software-properties-common dnsutils \
            iputils-ping traceroute jq vim wget unzip sudo iperf screen tmux \
-           file openstack tcpdump nmap less s3cmd s3curl \
+           file openstack tcpdump nmap less s3cmd s3curl direnv \
            netcat npm nodejs-legacy python3-pip python3-setuptools \
            apt-utils libdap-bin mysql-client mongodb-clients postgresql-client-9.5 \
            redis-tools libpython2.7-dev libxml2-dev libxslt-dev libffi-dev
@@ -52,17 +52,17 @@ RUN curl -L \
     "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" \
     | tar -C /usr/local/bin -zx
 
-RUN wget $(wget -q -O- https://bosh.io/docs/install-bosh-init.html | grep "bosh-init for Linux (amd64)" | awk -F "\'" '{print$2}') -O /usr/local/bin/bosh-init
-RUN chmod 755 /usr/local/bin/bosh-init
+# RUN wget $(wget -q -O- https://bosh.io/docs/install-bosh-init.html | grep "bosh-init for Linux (amd64)" | awk -F "\'" '{print$2}') -O /usr/local/bin/bosh-init
+# RUN chmod 755 /usr/local/bin/bosh-init
 
 RUN wget $(wget -O- -q https://www.vaultproject.io/downloads.html | grep linux_amd | awk -F "\"" '{print$2}') -O vault.zip && unzip vault.zip && cp vault /usr/local/bin/vault
 RUN chmod 755 /usr/local/bin/vault
 
 RUN cd /usr/local/bin/ && curl -o terraform.zip \
-    "https://releases.hashicorp.com/terraform/0.9.4/terraform_0.9.4_linux_amd64.zip" \
+    "https://releases.hashicorp.com/terraform/0.9.8/terraform_0.9.8_linux_amd64.zip" \
     && unzip terraform.zip && rm -f terraform.zip
 
-RUN gem install bosh_cli --no-ri --no-rdoc
+#RUN gem install bosh_cli --no-ri --no-rdoc
 
 RUN gem install cf-uaac --no-rdoc --no-ri
 
@@ -74,15 +74,11 @@ RUN cd /usr/local/bin && wget -q -O fly \
     "$(curl -s https://api.github.com/repos/concourse/fly/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x fly
 
-RUN cd /tmp && wget -q -O hugo.deb \
-    "$(curl -s https://api.github.com/repos/spf13/hugo/releases/latest \
-    |jq --raw-output '.assets[] | .browser_download_url' | grep Linux-64bit.deb)" && dpkg -i hugo.deb
-
 RUN cd /usr/local/bin && wget -q -O magnet \
     "$(curl -s https://api.github.com/repos/pivotalservices/magnet/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x magnet
 
-RUN cd /usr/local/bin && wget -q -O bosh2 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.23-linux-amd64 && chmod 0755 bosh2
+RUN cd /usr/local/bin && wget -q -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.26-linux-amd64 && chmod 0755 bosh && ln -s bosh bosh2
 
 RUN cd /usr/local/bin && wget -q -O omg-transform \
     "$(curl -s https://api.github.com/repos/enaml-ops/omg-transform/releases/latest \
@@ -129,7 +125,7 @@ RUN chmod 755 /usr/local/bin/photon
 RUN cd /usr/local/bin && wget -q -O cliaas \
     "$(curl -s https://api.github.com/repos/pivotal-cf/cliaas/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cliaas
 
-RUN cd /usr/local/bin && wget -q -O - https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/0.8.0/credhub-linux-0.8.0.tgz | tar xzf - > credhub && chmod 0755 credhub
+RUN cd /usr/local/bin && wget -q -O - https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/1.0.0/credhub-linux-1.0.0.tgz | tar xzf - > credhub && chmod 0755 credhub
 
 RUN cd /usr/local/bin && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
