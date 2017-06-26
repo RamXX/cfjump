@@ -147,6 +147,9 @@ RUN git clone https://github.com/cf-platform-eng/nsx-edge-gen.git && \
 
 RUN pip2 install tile-generator
 
+RUN mkdir -p .bucc && git clone https://github.com/starkandwayne/bucc.git && \
+    ln -s $HOME/.bucc/bucc/bin/bucc /usr/local/bin/bucc
+
 ADD firstrun.sh /usr/local/bin
 ADD add_go.sh /usr/local/bin
 ADD add_extras.sh /usr/local/bin

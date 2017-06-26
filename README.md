@@ -5,7 +5,7 @@ It has been tested on Ubuntu Server 16.04 (Xenial) 64-bit, Photon OS Docker host
 
 **Warning:** This is a 2.23 GB image. It was designed to give you the user experience of a real jumpbox VM, not to be necessarily used in Concourse or other automated tools.
 
-v0.31 includes:
+v0.32 includes:
 
 ##### Linux
 - Ubuntu:xenial official base image (large, but guarantees a "workstation-like" environment)
@@ -17,7 +17,6 @@ v0.31 includes:
 - `cf` CLI (latest)
 - [Concourse](http://concourse.ci/) `fly` CLI (latest)
 - [asg-creator](https://github.com/cloudfoundry-incubator/asg-creator) (latest) A cleaner way to create and manage ASGs.
-- [Enaml](https://github.com/enaml-ops/omg-cli) (latest). Deploy Cloud Foundry without YAML.
 - [omg-transform](https://github.com/enaml-ops/omg-transform) (latest). An enaml based tool that allows you to perform transformations on bosh manifests.
 - [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) (1.0.0) a command line interface to interact with CredHub servers.
 - [`cf mysql` CLI plugin](https://github.com/andreasf/cf-mysql-plugin) (1.3.6) makes it easy to connect the mysql command line client to any MySQL-compatible database used by Cloud Foundry apps.
@@ -53,6 +52,7 @@ v0.31 includes:
 - [Spiff](https://github.com/cloudfoundry-incubator/spiff) (1.0.8)
 - [Spruce](http://spruce.cf/) (latest)
 - [Genesis](https://github.com/starkandwayne/genesis) (latest)
+- [BUCC](https://github.com/starkandwayne/bucc) (latest) The fastest way to get a BUCC (BOSH, UAA Credhub and Concourse) stack
 - [kubectl](https://kubernetes.io/docs/user-guide/prereqs/) Kubernetes CLI. Useful for [Kubo](https://pivotal.io/kubo).
 
 ##### Extras
