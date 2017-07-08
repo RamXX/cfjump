@@ -19,7 +19,7 @@ enter_env(){
   if [ ! -z "$(docker ps -a | grep "$env")" ]; then
     docker start -ai "cfj-$env"
   else
-    cd $HOME
+    cd $CFJ_HOME
     mkdir -p "$env" && touch $env/.touchfile
     touch $env/.firstrun
     echo "export PS1=\"$env \$ \"" >> $env/.bashrc
@@ -30,7 +30,7 @@ enter_env(){
     if [ "$(uname)" == "Darwin" ]; then
        sudo chmod -R 777 "$env"
     fi
-    docker run --name="cfj-$env" -u "9024:9024" -it -v $HOME/"$env":/home/ops ramxx/cfjump /bin/bash
+    docker run --name="cfj-$env" -u "9024:9024" -it -v $CFJ_HOME/"$env":/home/ops ramxx/cfjump /bin/bash
   fi
 }
 
@@ -42,6 +42,10 @@ usage(){
 # Main
 if [ $# -gt 2 ]; then
   usage
+fi
+
+if [ -z "$CFJ_HOME" ] ; then
+  CFJ_HOME="${HOME}"
 fi
 
 env=$(basename "$1")
