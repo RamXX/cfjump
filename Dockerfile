@@ -34,7 +34,7 @@ RUN apt-get -y --no-install-recommends install ruby libroot-bindings-ruby-dev \
            file openstack tcpdump nmap less s3cmd s3curl direnv \
            netcat npm nodejs-legacy python3-pip python3-setuptools \
            apt-utils libdap-bin mysql-client mongodb-clients postgresql-client-9.5 \
-           redis-tools libpython2.7-dev libxml2-dev libxslt-dev libffi-dev
+           redis-tools libpython2.7-dev libxml2-dev libxslt-dev
 
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
@@ -52,17 +52,12 @@ RUN curl -L \
     "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" \
     | tar -C /usr/local/bin -zx
 
-# RUN wget $(wget -q -O- https://bosh.io/docs/install-bosh-init.html | grep "bosh-init for Linux (amd64)" | awk -F "\'" '{print$2}') -O /usr/local/bin/bosh-init
-# RUN chmod 755 /usr/local/bin/bosh-init
-
 RUN wget $(wget -O- -q https://www.vaultproject.io/downloads.html | grep linux_amd | awk -F "\"" '{print$2}') -O vault.zip && unzip vault.zip && cp vault /usr/local/bin/vault
 RUN chmod 755 /usr/local/bin/vault
 
 RUN cd /usr/local/bin/ && curl -o terraform.zip \
-    "https://releases.hashicorp.com/terraform/0.9.8/terraform_0.9.8_linux_amd64.zip" \
+    "https://releases.hashicorp.com/terraform/0.9.11/terraform_0.9.11_linux_amd64.zip" \
     && unzip terraform.zip && rm -f terraform.zip
-
-#RUN gem install bosh_cli --no-ri --no-rdoc
 
 RUN gem install cf-uaac --no-rdoc --no-ri
 
@@ -78,7 +73,7 @@ RUN cd /usr/local/bin && wget -q -O magnet \
     "$(curl -s https://api.github.com/repos/pivotalservices/magnet/releases/latest \
     |jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x magnet
 
-RUN cd /usr/local/bin && wget -q -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.26-linux-amd64 && chmod 0755 bosh && ln -s bosh bosh2
+RUN cd /usr/local/bin && wget -q -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-linux-amd64 && chmod 0755 bosh && ln -s bosh bosh2
 
 RUN cd /usr/local/bin && wget -q -O omg-transform \
     "$(curl -s https://api.github.com/repos/enaml-ops/omg-transform/releases/latest \
@@ -125,7 +120,7 @@ RUN chmod 755 /usr/local/bin/photon
 RUN cd /usr/local/bin && wget -q -O cliaas \
     "$(curl -s https://api.github.com/repos/pivotal-cf/cliaas/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux)" && chmod +x cliaas
 
-RUN cd /usr/local/bin && wget -q -O - https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/1.0.0/credhub-linux-1.0.0.tgz | tar xzf - > credhub && chmod 0755 credhub
+RUN cd /usr/local/bin && wget -q -O - https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/1.2.0/credhub-linux-1.2.0.tgz | tar xzf - > credhub && chmod 0755 credhub
 
 RUN cd /usr/local/bin && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
@@ -134,9 +129,9 @@ RUN cd /usr/local/bin && \
 RUN cd $CFPLUGINS && wget -q -O autopilot \
     "$(curl -s https://api.github.com/repos/xchapter7x/autopilot/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux|grep -v zip)" && chmod +x autopilot
 
-RUN cd $CFPLUGINS && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.3.6/cf-mysql-plugin-linux-amd64 && \
+RUN cd $CFPLUGINS && wget -q -O cf-mysql-plugin https://github.com/andreasf/cf-mysql-plugin/releases/download/v1.4.0/cf-mysql-plugin-linux-amd64 && \
     chmod 0755 ./cf-mysql-plugin 
-RUN cd $CFPLUGINS && wget -q -O cf-service-connect https://github.com/18F/cf-service-connect/releases/download/v1.0.0/cf-service-connect_linux_amd64 && \
+RUN cd $CFPLUGINS && wget -q -O cf-service-connect https://github.com/18F/cf-service-connect/releases/download/1.1.0/cf-service-connect.linux64 && \
     chmod 0755 ./cf-service-connect
 
 RUN cd /usr/local/bin && wget -q -O goblob \
