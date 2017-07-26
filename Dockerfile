@@ -149,7 +149,7 @@ ADD firstrun.sh /usr/local/bin
 ADD add_go.sh /usr/local/bin
 ADD add_extras.sh /usr/local/bin
 RUN chown -R ops:ops /opt $HOME $GOBIN $GOPATH
-RUN apt-get clean && apt-get -y autoremove
+RUN apt-get -y autoremove && apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/*
 
 RUN echo "ops ALL=NOPASSWD: ALL" >> /etc/sudoers
